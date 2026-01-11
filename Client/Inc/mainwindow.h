@@ -1,0 +1,37 @@
+//
+// Created by 33717 on 2026/1/9.
+//
+
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+#include "logindialog.h"
+#include "registerdialog.h"
+
+QT_BEGIN_NAMESPACE
+
+namespace Ui
+{
+    class MainWindow;
+}
+
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget* parent = nullptr);
+    ~MainWindow() override;
+public slots:
+    void SlotSwitchReg();
+private:
+    Ui::MainWindow* ui;
+    LoginDialog* __loginDialog;
+    RegisterDialog* __registerDialog;
+};
+
+
+#endif //MAINWINDOW_H

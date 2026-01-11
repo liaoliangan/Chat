@@ -1,0 +1,16 @@
+# ninja log v6
+4	711	7897275891797521	build.ninja	4e2965283c5ffe0d
+29	201	7897266284772443	Client_autogen/timestamp	20a22dab44b64b92
+29	201	7897266284772443	Client_autogen/mocs_compilation.cpp	20a22dab44b64b92
+29	201	7897266284772443	D:/code/Chat/Client/cmake-build-debug/Client_autogen/timestamp	20a22dab44b64b92
+412	3192	7897266288601284	CMakeFiles/Client.dir/Src/registerdialog.cpp.obj	2d5ca681b322ff92
+29	201	7897266284772443	D:/code/Chat/Client/cmake-build-debug/Client_autogen/mocs_compilation.cpp	20a22dab44b64b92
+175	267	7897146662740799	Client_autogen/EWIEGA46WW/qrc_res.cpp	e699971005be9c6
+687	3371	7897177657913101	CMakeFiles/Client.dir/Client_autogen/mocs_compilation.cpp.obj	22af1c6094e00e85
+707	3395	7897177658123198	CMakeFiles/Client.dir/Src/mainwindow.cpp.obj	f57c5be2433e6a04
+698	3617	7897177658027762	CMakeFiles/Client.dir/main.cpp.obj	d9fccf4454561d4f
+3192	3935	7897266316391724	Client.exe	72d997f2f51ff5e7
+175	2369	7896778134824339	CMakeFiles/Client.dir/Src/logindialog.cpp.obj	26951553700dc3
+175	267	7897146662740799	D:/code/Chat/Client/cmake-build-debug/Client_autogen/EWIEGA46WW/qrc_res.cpp	e699971005be9c6
+271	873	7897146662890779	CMakeFiles/Client.dir/Client_autogen/EWIEGA46WW/qrc_res.cpp.obj	a2ead138d22f7f05
+201	2968	7897266286491432	CMakeFiles/Client.dir/Src/global.cpp.obj	676bcac2de6aafa8

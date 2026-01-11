@@ -1,0 +1,5 @@
+D:/code/Chat/Client/cmake-build-debug/CMakeFiles/Client.dir
+D:/code/Chat/Client/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/code/Chat/Client/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/code/Chat/Client/cmake-build-debug/CMakeFiles/Client_autogen_timestamp_deps.dir
+D:/code/Chat/Client/cmake-build-debug/CMakeFiles/Client_autogen.dir
