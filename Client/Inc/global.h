@@ -17,6 +17,8 @@
 #define COUT std::cout
 #define ENDL std::endl
 
+extern QString gate_url_prefix;
+
 namespace LA
 {
     extern std::function<void(QWidget*)> repolish; //刷新，使qss生效
