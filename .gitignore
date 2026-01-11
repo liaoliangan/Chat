@@ -1,5 +1,45 @@
-# Build directory
+# Build directories for all projects
 build/
-# VSCode settings
+**/build/
+
+# VSCode settings for all projects
 .vscode/
+**/.vscode/
+
+# Client project specific
+Client/build/
+Client/cmake-build-debug/
+Client/.vscode/
+Client/node_modules/
+Client/.idea/
+
+# Gate server specific
+GateServer/build/
+GateServer/.vscode/
+
 # Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# IDE files
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Other common ignores
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
