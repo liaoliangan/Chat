@@ -12,7 +12,6 @@ Client/cmake-build-debug/
 Client/.vscode/
 Client/node_modules/
 Client/.idea/
-
 # Gate server specific
 GateServer/build/
 GateServer/.vscode/
@@ -23,7 +22,7 @@ GateServer/.vscode/
 *.exe
 *.dll
 *.so
-
+*.ini
 # Log files
 *.log
 

@@ -1,14 +1,17 @@
 #ifndef CONST_H
 #define CONST_H
 
-#include <boost/beast/http.hpp>
-#include <boost/beast.hpp>
-#include <boost/asio.hpp>
-#include <iostream>
 #include <memory>
+#include <iostream>
 #include <json/json.h>
 #include <json/value.h>
 #include <json/reader.h>
+#include <boost/asio.hpp>
+#include <boost/beast.hpp>
+#include <boost/beast/http.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 
 namespace LA
 {
@@ -19,5 +22,8 @@ namespace LA
         RPCFAILED = 1002,
     };
 };
+
+class ConfigMgr;
+extern ConfigMgr gCfgMgr;
 
 #endif

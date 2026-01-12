@@ -19,12 +19,6 @@ class HttpMgr : public QObject,
 
 public:
     ~HttpMgr();
-
-private:
-    friend class Singalton<HttpMgr>; //将基类声明为友元，使得Signalton可以访问HttpMgr的构造函数
-    HttpMgr();
-    QNetworkAccessManager _manager;
-
     /**
      * @brief 发送http请求
      * @param url 请求的url
@@ -33,7 +27,10 @@ private:
      * @param mod 模块id
      */
     void PostHttpReq(const QUrl& url, QJsonObject json, LA::ReqId req_id, LA::Modules mod);
-
+private:
+    friend class Singalton<HttpMgr>; //将基类声明为友元，使得Signalton可以访问HttpMgr的构造函数
+    HttpMgr();
+    QNetworkAccessManager _manager;
 private slots:
     /**
      * @brief http请求完成后的槽函数

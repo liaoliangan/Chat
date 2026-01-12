@@ -14,10 +14,14 @@
 #include<iostream>
 #include<mutex>
 #include<QMap>
+#include<QJsonObject>
+#include<QDir>
+#include<QSettings>
+
 #define COUT std::cout
 #define ENDL std::endl
 
-extern QString gate_url_prefix;
+inline QString gate_url_prefix = "";
 
 namespace LA
 {

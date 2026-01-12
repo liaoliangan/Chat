@@ -71,6 +71,10 @@ void RegisterDialog::on_get_code_clicked()
     {
         //匹配成功，发送http验证码
         showTip(tr("已发送验证码"), match);
+        QJsonObject json_obj;
+        json_obj["email"] = email;
+        HttpMgr::getInstance()->PostHttpReq(QUrl(gate_url_prefix+"/get_varifycode"), json_obj,
+                                            LA::ReqId::ID_GET_VARIFY_CODE, LA::Modules::REGISTERMOD);
     }
     else
     {
@@ -101,5 +105,4 @@ void RegisterDialog::slot_reg_mod_finish(LA::ReqId id, QString res, LA::ErrorCod
 
     QJsonObject obj = doc.object();
     __handlers[id](obj);
-    return;
 }

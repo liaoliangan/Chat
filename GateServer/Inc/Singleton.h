@@ -1,3 +1,6 @@
+#ifndef SINGLETON_H
+#define SINGLETON_H
+
 #include <memory>
 #include <mutex>
 #include <iostream>
@@ -28,3 +31,5 @@ public:
 
 template <typename T>
 std::shared_ptr<T> Singleton<T>::_instance = nullptr;
+
+#endif

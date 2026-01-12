@@ -33,7 +33,6 @@ void HttpMgr::PostHttpReq(const QUrl& url, QJsonObject json, LA::ReqId req_id, L
         //发送信号通知完成
         emit self->sig_http_finish(req_id, res, LA::ErrorCodes::SUCCESS, mod);
         reply->deleteLater();
-        return;
     });
 }
 

@@ -1,6 +1,6 @@
 #include "LogicSystem.h"
+#include "VarifyClient.h"
 #include "HttpConnection.h"
-#include "const.h"
 
 void LogicSystem::RegGet(std::string url, HttpHandler handler)
 {
@@ -52,13 +52,15 @@ LogicSystem::LogicSystem()
             return true;
         }
         auto email = src_root["email"].asString();
+
+        message::GetVarifyRsp rsp=VarifyClient::GetInstance()->GetVarifyCode(email);
+
         std::cout << "email is " << email << std::endl;
-        root["error"] = static_cast<int>(LA::ErrorCodes::SUCCESS);
+        root["error"] = rsp.error();
         root["email"] = src_root["email"];
         std::string jsonstr=root.toStyledString();
         boost::beast::ostream(connection->_response.body()) << jsonstr;
-        return true;
-    });
+        return true; });
 }
 LogicSystem::~LogicSystem() = default;
 bool LogicSystem::HandleGet(std::string path, std::shared_ptr<HttpConnection> con)

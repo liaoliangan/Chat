@@ -1,5 +1,9 @@
 #include "HttpConnection.h"
 #include "LogicSystem.h"
+#include <iostream>
+#include <cctype>  // For isalnum function
+#include <cassert> // For assert function
+
 HttpConnection::HttpConnection(boost::asio::ip::tcp::socket socket)
     : _socket(std::move(socket))
 {
@@ -100,12 +104,12 @@ void HttpConnection::PreParseGetParam()
     std::size_t query_pos = uri.find('?');
     if (query_pos == std::string_view::npos)
     {
-        _get_url = uri;
+        _get_url = std::string(uri);
         return;
     }
 
-    _get_url = uri.substr(0, query_pos);
-    std::string query_string = uri.substr(query_pos + 1);
+    _get_url = std::string(uri.substr(0, query_pos));
+    std::string query_string = std::string(uri.substr(query_pos + 1));
     std::string key;
     std::string value;
     size_t pos = 0;
