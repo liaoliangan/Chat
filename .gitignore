@@ -15,6 +15,9 @@ Client/.idea/
 # Gate server specific
 GateServer/build/
 GateServer/.vscode/
+VarifyServer/.idea/
+VarifyServer/.vscode/
+VarifyServer/node_modules/
 
 # Compiled files
 *.o
