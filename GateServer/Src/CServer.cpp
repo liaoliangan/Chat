@@ -1,6 +1,7 @@
 #include "CServer.h"
+#include "AsioIOContextPool.h"
 #include "HttpConnection.h"
-CServer::CServer(boost::asio::io_context &ioc, unsigned short &port) : _ioc(ioc), _acceptor(ioc, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)), _socket(ioc)
+CServer::CServer(boost::asio::io_context &ioc, unsigned short &port) : _ioc(ioc), _acceptor(ioc, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
 {
     // 确保套接字可以重用地址
     _acceptor.set_option(boost::asio::socket_base::reuse_address(true));
@@ -8,7 +9,9 @@ CServer::CServer(boost::asio::io_context &ioc, unsigned short &port) : _ioc(ioc)
 void CServer::Start()
 {
     auto self = shared_from_this();
-    _acceptor.async_accept(_socket, [self](boost::beast::error_code ec)
+    auto &io_context = AsioIOContextPool::GetInstance()->GetIOContext();
+    std::shared_ptr<HttpConnection> new_con = std::make_shared<HttpConnection>(io_context);
+    _acceptor.async_accept(new_con->GetSocket(), [self,new_con](boost::beast::error_code ec)
                            {
         try {
             //出错则放弃这个连接，继续监听新链接
@@ -19,7 +22,7 @@ void CServer::Start()
             }
 
             //处理新链接，创建HpptConnection类管理新连接
-            std::make_shared<HttpConnection>(std::move(self->_socket))->Start();
+            new_con->Start();
             //继续监听
             self->Start();
         }

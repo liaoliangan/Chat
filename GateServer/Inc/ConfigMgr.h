@@ -2,6 +2,7 @@
 #define CONFIGMGR_H
 
 #include "const.h"
+#include "Singleton.h"
 struct SectionInfo
 {
     SectionInfo();
@@ -14,14 +15,17 @@ struct SectionInfo
 
 class ConfigMgr
 {
+    friend class Singleton<ConfigMgr>;
+
 public:
-    ConfigMgr();
     ~ConfigMgr();
-    ConfigMgr(const ConfigMgr &src);
-    ConfigMgr &operator=(const ConfigMgr &src);
+    ConfigMgr(const ConfigMgr &src)=delete;
+    ConfigMgr &operator=(const ConfigMgr &src)=delete;
     SectionInfo operator[](const std::string &section);
+    static ConfigMgr &GetInstance();
 
 private:
+    ConfigMgr();
     std::map<std::string, SectionInfo> _config_map;
 };
 
@@ -64,7 +68,7 @@ int main()
 */
 
 /*----------------------------------------------------------------------------*/
-//py读取配置文件
+// py读取配置文件
 /*
 #include <Python.h>
 #include <iostream>

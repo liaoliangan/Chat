@@ -1,13 +1,16 @@
 #ifndef CONST_H
 #define CONST_H
 
+#include <queue>
 #include <memory>
+#include <atomic>
 #include <iostream>
 #include <json/json.h>
 #include <json/value.h>
 #include <json/reader.h>
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
+#include <condition_variable>
 #include <boost/beast/http.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -22,8 +25,4 @@ namespace LA
         RPCFAILED = 1002,
     };
 };
-
-class ConfigMgr;
-extern ConfigMgr gCfgMgr;
-
 #endif

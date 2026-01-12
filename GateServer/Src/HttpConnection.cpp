@@ -4,8 +4,8 @@
 #include <cctype>  // For isalnum function
 #include <cassert> // For assert function
 
-HttpConnection::HttpConnection(boost::asio::ip::tcp::socket socket)
-    : _socket(std::move(socket))
+HttpConnection::HttpConnection(boost::asio::io_context &ioc)
+    : _socket(ioc)
 {
 }
 void HttpConnection::Start()
@@ -27,6 +27,11 @@ void HttpConnection::Start()
             catch (std::exception& exp) {
                 std::cout << "exception is " << exp.what() << std::endl;
             } });
+}
+
+boost::asio::ip::tcp::socket &HttpConnection::GetSocket()
+{
+    return _socket;
 }
 
 unsigned char ToHex(unsigned char x)

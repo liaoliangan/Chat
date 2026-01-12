@@ -51,8 +51,8 @@ LogicSystem::LogicSystem()
             boost::beast::ostream(connection->_response.body()) << jsonstr;
             return true;
         }
+        
         auto email = src_root["email"].asString();
-
         message::GetVarifyRsp rsp=VarifyClient::GetInstance()->GetVarifyCode(email);
 
         std::cout << "email is " << email << std::endl;

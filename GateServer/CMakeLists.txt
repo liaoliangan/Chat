@@ -15,12 +15,9 @@ file(GLOB SRCFILE
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Inc)
 
-
-# 假设已经安装好grpc了
 find_package(Threads REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
-find_package(Python3 REQUIRED COMPONENTS Development)
 
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
@@ -30,12 +27,9 @@ add_executable(${CMAKE_PROJECT_NAME}
     main.cpp
 )
 
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${Python3_INCLUDE_DIRS})
-
 target_link_libraries(${CMAKE_PROJECT_NAME}
     jsoncpp
     gRPC::grpc++_reflection
     gRPC::grpc++
     protobuf::libprotobuf
-    Python3::Python
 )

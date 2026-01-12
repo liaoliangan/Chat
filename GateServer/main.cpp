@@ -1,10 +1,9 @@
 #include "const.h"
 #include <CServer.h>
 #include "ConfigMgr.h"
-ConfigMgr gCfgMgr;
 int main()
 {
-    std::string gate_port = gCfgMgr["GateServer"]["Port"];
+    std::string gate_port = ConfigMgr::GetInstance()["GateServer"]["Port"];
     try
     {
         unsigned short port = static_cast<unsigned short>(atoi(gate_port.c_str()));
