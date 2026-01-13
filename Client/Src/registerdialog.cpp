@@ -23,6 +23,7 @@ RegisterDialog::RegisterDialog(QWidget* parent) :
     LA::repolish(ui->err_tip);
 
     connect(HttpMgr::getInstance().get(), &HttpMgr::sig_reg_mod_finish, this, &RegisterDialog::slot_reg_mod_finish);
+    connect(ui->sure_btn, &QPushButton::clicked, this, &RegisterDialog::on_sure_btn_clicked);
     initHttpHandlers();
 }
 
@@ -60,6 +61,19 @@ void RegisterDialog::initHttpHandlers()
         showTip(tr("已发送验证码"), true);
         COUT << "email is " << email.toStdString() << ENDL;
     });
+
+    __handlers.insert(LA::ReqId::ID_REG_USER, [this](QJsonObject obj)
+    {
+        LA::ErrorCodes err = static_cast<LA::ErrorCodes>(obj["error"].toInt());
+        if (err != LA::ErrorCodes::SUCCESS)
+        {
+            showTip(tr("参数错误"), false);
+            return;
+        }
+        const QString email = obj["email"].toString();
+        showTip(tr("用户注册成功"), true);
+        COUT << "email is " << email.toStdString() << ENDL;
+    });
 }
 
 void RegisterDialog::on_get_code_clicked()
@@ -73,7 +87,7 @@ void RegisterDialog::on_get_code_clicked()
         showTip(tr("已发送验证码"), match);
         QJsonObject json_obj;
         json_obj["email"] = email;
-        HttpMgr::getInstance()->PostHttpReq(QUrl(gate_url_prefix+"/get_varifycode"), json_obj,
+        HttpMgr::getInstance()->PostHttpReq(QUrl(gate_url_prefix + "/get_varifycode"), json_obj,
                                             LA::ReqId::ID_GET_VARIFY_CODE, LA::Modules::REGISTERMOD);
     }
     else
@@ -81,6 +95,55 @@ void RegisterDialog::on_get_code_clicked()
         //未匹配
         showTip(tr("邮箱地址不正确"), match);
     }
+}
+
+void RegisterDialog::on_sure_btn_clicked()
+{
+    if (ui->user_Edit->text() == "")
+    {
+        showTip(tr("用户名不能为空"), false);
+        return;
+    }
+
+    if (ui->email_Edit->text() == "")
+    {
+        showTip(tr("邮箱不能为空"), false);
+        return;
+    }
+
+    if (ui->pass_Edit->text() == "")
+    {
+        showTip(tr("密码不能为空"), false);
+        return;
+    }
+
+    if (ui->confirm_Edit->text() == "")
+    {
+        showTip(tr("确认密码不能为空"), false);
+        return;
+    }
+
+    if (ui->confirm_Edit->text() != ui->pass_Edit->text())
+    {
+        showTip(tr("密码和确认密码不匹配"), false);
+        return;
+    }
+
+    if (ui->varify_Edit->text() == "")
+    {
+        showTip(tr("验证码不能为空"), false);
+        return;
+    }
+
+    //day11 发送http请求注册用户
+    QJsonObject json_obj;
+    json_obj["user"] = ui->user_Edit->text();
+    json_obj["email"] = ui->email_Edit->text();
+    json_obj["passwd"] = ui->pass_Edit->text();
+    json_obj["confirm"] = ui->confirm_Edit->text();
+    json_obj["varifycode"] = ui->varify_Edit->text();
+    HttpMgr::getInstance()->PostHttpReq(QUrl(gate_url_prefix + "/user_register"),
+                                        json_obj, LA::ReqId::ID_REG_USER, LA::Modules::REGISTERMOD);
 }
 
 void RegisterDialog::slot_reg_mod_finish(LA::ReqId id, QString res, LA::ErrorCodes err)

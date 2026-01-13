@@ -24,7 +24,7 @@ void HttpMgr::PostHttpReq(const QUrl& url, QJsonObject json, LA::ReqId req_id, L
         if (reply->error() != QNetworkReply::NoError)
         {
             COUT << reply->errorString().toStdString() << ENDL;
-            emit self->sig_http_finish(req_id, "", LA::ErrorCodes::ERR_NETWORK, mod);
+            emit self->sig_http_finish(req_id, "", LA::ErrorCodes::RPCFAILED, mod);
             reply->deleteLater(); //等到不用的时候，qt自动回收
             return;
         }

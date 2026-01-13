@@ -30,8 +30,8 @@ public:
 
 private slots:
     void on_get_code_clicked();
+    void on_sure_btn_clicked();
     void slot_reg_mod_finish(LA::ReqId id, QString res, LA::ErrorCodes err);
-
 private:
     Ui::RegisterDialog* ui;
     void showTip(QString str, bool b_ok);

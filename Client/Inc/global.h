@@ -40,9 +40,16 @@ namespace LA
 
     enum class ErrorCodes
     {
-        SUCCESS = 0,
-        ERR_JSON = 1, //json解析错误
-        ERR_NETWORK = 2 //网络错误
+        SUCCESS = 0,                 // 成功
+        ERROR_JSON = 1001,           // json解析错误
+        RPCFAILED = 1002,            // rpc调用失败
+        VARIFY_EXPIRED = 1003,       // 验证码已过期
+        VARIFY_CODE_ERROR = 1004,    // 验证码错误
+        USER_EXIST = 1005,           // 用户已存在
+        PASSWD_ERROR = 1006,         // 密码错误
+        EMAIL_NOT_MATCH = 1007,      // 邮箱不匹配
+        PASSWD_UPDATE_FAILED = 1008, // 密码更新失败
+        PASSWD_INVALID               // 密码无效
     };
 }
 
