@@ -1,6 +1,8 @@
 #include "const.h"
 #include <CServer.h>
 #include "ConfigMgr.h"
+#include "RedisMgr.h"
+
 int main()
 {
     std::string gate_port = ConfigMgr::GetInstance()["GateServer"]["Port"];

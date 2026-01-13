@@ -14,10 +14,15 @@ file(GLOB SRCFILE
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/*.cc)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Inc)
+include_directories(/usr/include/mysql-cppconn)
 
 find_package(Threads REQUIRED)
 find_package(Protobuf CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
+find_package(PkgConfig REQUIRED) # hiredis 提供 pkg-config 文件
+pkg_check_modules(HIREDIS REQUIRED hiredis)
+
+set(MYSQLCPPCONN_LIBRARIES /usr/lib/x86_64-linux-gnu/libmysqlcppconn.so)
 
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
@@ -32,4 +37,10 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     gRPC::grpc++_reflection
     gRPC::grpc++
     protobuf::libprotobuf
+    ${HIREDIS_LIBRARIES} # hiredis
+    ${MYSQLCPPCONN_LIBRARIES}
+)
+target_include_directories(${CMAKE_PROJECT_NAME}
+    PRIVATE
+    ${HIREDIS_INCLUDE_DIRS}
 )
