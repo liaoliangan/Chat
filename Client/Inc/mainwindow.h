@@ -25,8 +25,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow() override;
+
 public slots:
     void SlotSwitchReg();
+    void SlotSwitchLogin();
+
 private:
     Ui::MainWindow* ui;
     LoginDialog* __loginDialog;

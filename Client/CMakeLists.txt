@@ -15,6 +15,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         Network
         SerialPort
+        Svg
         REQUIRED)
 
 qt_standard_project_setup()
@@ -41,6 +42,7 @@ target_link_libraries(Client
         Qt::Widgets
         Qt::Network
         Qt::SerialPort
+        Qt::Svg
         dwmapi
 )
 

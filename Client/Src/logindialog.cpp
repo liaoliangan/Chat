@@ -6,7 +6,7 @@
 
 #include "logindialog.h"
 #include "ui_LoginDialog.h"
-
+#include "global.h"
 
 LoginDialog::LoginDialog(QWidget* parent) :
     QDialog(parent), ui(new Ui::LoginDialog)
@@ -21,5 +21,6 @@ LoginDialog::LoginDialog(QWidget* parent) :
 
 LoginDialog::~LoginDialog()
 {
+    COUT << "LoginDialog::~LoginDialog()" << ENDL;
     delete ui;
 }

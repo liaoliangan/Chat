@@ -2,6 +2,7 @@
 #include "VarifyClient.h"
 #include "HttpConnection.h"
 #include "RedisMgr.h"
+#include "MysqlMgr.h"
 void LogicSystem::RegGet(std::string url, HttpHandler handler)
 {
     _get_handlers.insert(make_pair(url, handler));
@@ -80,7 +81,7 @@ LogicSystem::LogicSystem()
     }
 
     auto email=src_root["email"].asString();
-    auto name=src_root["name"].asString();
+    auto name=src_root["user_name"].asString();
     auto pwd=src_root["passwd"].asString();
     auto confirm=src_root["confirm"].asString();
 
@@ -116,9 +117,17 @@ LogicSystem::LogicSystem()
     //TODO
 
     //查找数据库判断用户是否存在
+    int uid = MysqlMgr::GetInstance()->RegUser(name, email, pwd);
+    if (uid == 0 || uid == -1) {
+        std::cout << " user or email exist" << std::endl;
+        root["error"] = static_cast<int>(LA::ErrorCodes::USER_EXIST);
+        std::string jsonstr = root.toStyledString();
+        boost::beast::ostream(connection->_response.body()) << jsonstr;
+        return true;
+    }
 
     root["error"] = 0;
-    // root["uid"]=uid;
+    root["uid"]=uid;
     root["email"] = src_root["email"];
     root["user"]= src_root["user"].asString();
     root["passwd"] = src_root["passwd"].asString();

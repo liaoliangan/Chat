@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
     {
         QString styleSheet = QLatin1String(style.readAll());
         a.setStyleSheet(styleSheet);
+        COUT << "load style sheet" << ENDL;
         style.close();
     }
 
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
     QDir project_path(app_path);
     project_path.cdUp();
     //QDir::separator是分隔符，windows下是\\,Unix/Linux下是/
-    QString config_path = QDir::toNativeSeparators(project_path.absolutePath()  + QDir::separator() + fileName);
+    QString config_path = QDir::toNativeSeparators(project_path.absolutePath() + QDir::separator() + fileName);
     QSettings settings(config_path, QSettings::IniFormat);
     QString gate_host = settings.value("GateServer/host").toString();
     QString gate_port = settings.value("GateServer/port").toString();
