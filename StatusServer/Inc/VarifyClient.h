@@ -1,5 +1,5 @@
-#ifndef RPCONPOOL_H
-#define RPCONPOOL_H
+#ifndef VARIFYCLIENT_H
+#define VARIFYCLIENT_H
 
 #include "const.h"
 #include "Singleton.h"
@@ -23,6 +23,19 @@ private:
     std::atomic<bool> b_stop_;
     std::condition_variable cond_;
     std::queue<std::unique_ptr<message::VarifyService::Stub>> connections_;
+};
+
+class VarifyClient : public Singleton<VarifyClient>
+{
+    friend class Singleton<VarifyClient>;
+
+public:
+    message::GetVarifyRsp GetVarifyCode(std::string email);
+    ~VarifyClient();
+
+private:
+    VarifyClient();
+    std::unique_ptr<RPConPool> pool_;
 };
 
 #endif

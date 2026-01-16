@@ -43,6 +43,7 @@ namespace LA
     {
         REGISTERMOD = 0, //注册模块
         RESETMOD = 1, //重置密码模块
+        LOGINMOD = 2, //登录模块
     };
 
     enum class ErrorCodes
@@ -61,13 +62,13 @@ namespace LA
 
     enum class TipErr
     {
-        TIP_SUCCESS = 0,//成功
-        TIP_EMAIL_ERR = 1,//邮箱格式错误
-        TIP_PWD_ERR = 2,//密码格式错误
-        TIP_CONFIRM_ERR = 3,//确认密码格式错误
-        TIP_PWD_CONFIRM = 4,//密码不一致
-        TIP_VARIFY_ERR = 5,//验证码格式错误
-        TIP_USER_ERR = 6//用户名格式错误
+        TIP_SUCCESS = 0, //成功
+        TIP_EMAIL_ERR = 1, //邮箱格式错误
+        TIP_PWD_ERR = 2, //密码格式错误
+        TIP_CONFIRM_ERR = 3, //确认密码格式错误
+        TIP_PWD_CONFIRM = 4, //密码不一致
+        TIP_VARIFY_ERR = 5, //验证码格式错误
+        TIP_USER_ERR = 6 //用户名格式错误
     };
 
     static std::function<QString(QString)> md5Hash = [](QString input)-> QString

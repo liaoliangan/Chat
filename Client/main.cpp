@@ -5,9 +5,30 @@
 #include <QFile>
 #include"global.h"
 #include "HttpMgr.h"
+#include <QtGlobal>
+void myMessageHandler(QtMsgType type,
+                      const QMessageLogContext &ctx,
+                      const QString &msg)
+{
+    Q_UNUSED(ctx)   // 如需文件/行号，可再格式化
+    switch (type) {
+    case QtDebugMsg:
+    case QtInfoMsg:
+        fprintf(stdout, "%s\n", msg.toLocal8Bit().constData());
+        fflush(stdout);
+        break;
+    case QtWarningMsg:
+    case QtCriticalMsg:
+    case QtFatalMsg:
+        fprintf(stderr, "%s\n", msg.toLocal8Bit().constData());
+        fflush(stderr);
+        break;
+    }
+}
 
 int main(int argc, char* argv[])
 {
+    qInstallMessageHandler(myMessageHandler); // 接管 Qt 日志
     QApplication a(argc, argv);
     QFile style(":/style/LA.qss");
     if (style.open(QIODevice::ReadOnly))

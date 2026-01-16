@@ -1,10 +1,46 @@
 <RCC>
     <qresource prefix="/">
-        <file>image/login1.png</file>
         <file>style/LA.qss</file>
+        <file>image/add_friend.png</file>
+        <file>image/add_friend_hover.png</file>
+        <file>image/add_friend_normal.png</file>
+        <file>image/addtip.png</file>
+        <file>image/arowdown.png</file>
+        <file>image/chat_icon.png</file>
+        <file>image/chat_icon_hover.png</file>
+        <file>image/chat_icon_press.png</file>
+        <file>image/chat_icon_select_hover.png</file>
+        <file>image/chat_icon_select_press.png</file>
+        <file>image/close_search.png</file>
+        <file>image/close_transparent.png</file>
+        <file>image/contact_list.png</file>
+        <file>image/contact_list_hover.png</file>
+        <file>image/contact_list_press.png</file>
+        <file>image/female.png</file>
+        <file>image/filedir.png</file>
+        <file>image/filedir_hover.png</file>
+        <file>image/filedir_press.png</file>
+        <file>image/head_1.png</file>
+        <file>image/male.png</file>
+        <file>image/msg_chat_hover.png</file>
+        <file>image/msg_chat_normal.png</file>
+        <file>image/msg_chat_press.png</file>
+        <file>image/red_point.png</file>
+        <file>image/right_tip.png</file>
+        <file>image/search.png</file>
+        <file>image/smile.png</file>
+        <file>image/smile_hover.png</file>
+        <file>image/smile_press.png</file>
+        <file>image/tipclose.png</file>
         <file>image/unvisible.png</file>
         <file>image/unvisible_hover.png</file>
+        <file>image/video_chat_hover.png</file>
+        <file>image/video_chat_normal.png</file>
+        <file>image/video_chat_press.png</file>
         <file>image/visible.png</file>
         <file>image/visible_hover.png</file>
+        <file>image/voice_chat_hover.png</file>
+        <file>image/voice_chat_normal.png</file>
+        <file>image/voice_chat_press.png</file>
     </qresource>
 </RCC>

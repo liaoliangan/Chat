@@ -84,8 +84,6 @@ function rebuild()
 
 if [ "$1" == "clean" ]; then
     clean
-elif [ "$1" == "run" ]; then
-    run
 elif [ "$1" == "rebuild" ]; then
     rebuild
 elif [ "$1" == "start" ]; then

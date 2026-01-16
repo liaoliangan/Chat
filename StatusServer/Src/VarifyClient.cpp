@@ -1,4 +1,5 @@
-#include "RPConPool.h"
+#include "VarifyClient.h"
+#include "ConfigMgr.h"
 
 RPConPool::RPConPool(size_t poolsize, std::string host, std::string port) : poolSize_(poolsize), host_(host), port_(port), b_stop_(false)
 {
@@ -49,4 +50,38 @@ void RPConPool::ReturnConnection(std::unique_ptr<message::VarifyService::Stub> c
     std::lock_guard<std::mutex> lock(mutex_);
     connections_.push(std::move(conn));
     cond_.notify_one();
+}
+
+
+VarifyClient::VarifyClient()
+{
+    auto &gCfgMgr = ConfigMgr::GetInstance();
+    std::string host = gCfgMgr["VarifyServer"]["Host"];
+    std::string port = gCfgMgr["VarifyServer"]["Port"];
+    pool_.reset(new RPConPool(5, host, port));
+}
+
+message::GetVarifyRsp VarifyClient::GetVarifyCode(std::string email)
+{
+    grpc::ClientContext context;
+    message::GetVarifyRsp reply;   // 回复的响应
+    message::GetVarifyReq request; // 请求的参数
+    request.set_email(email);
+    auto stub = pool_->GetConnection();
+    grpc::Status status = stub->GetVarifyCode(&context, request, &reply);
+    if (status.ok())
+    {
+        pool_->ReturnConnection(std::move(stub));
+        return reply;
+    }
+    else
+    {
+        pool_->ReturnConnection(std::move(stub));
+        reply.set_error(static_cast<int>(LA::ErrorCodes::RPCFAILED));
+        return reply;
+    }
+}
+
+VarifyClient::~VarifyClient()
+{
 }
