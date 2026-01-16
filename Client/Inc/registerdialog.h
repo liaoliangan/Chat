@@ -27,7 +27,6 @@ class RegisterDialog : public QDialog
 public:
     explicit RegisterDialog(QWidget* parent = nullptr);
     ~RegisterDialog() override;
-
 signals:
     void sigSwitchLogin();
 

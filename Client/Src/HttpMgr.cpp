@@ -42,6 +42,9 @@ void HttpMgr::slot_http_finish(LA::ReqId id, QString res, LA::ErrorCodes err, LA
     {
         //发送信号通知指定模块
         emit sig_reg_mod_finish(id, res, err);
+    }else if (mod==LA::Modules::RESETMOD)
+    {
+        emit sig_reset_mod_finish(id,res,err);
     }
 }
 

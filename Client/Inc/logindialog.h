@@ -7,7 +7,6 @@
 
 #include <QDialog>
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Ui
@@ -24,8 +23,13 @@ class LoginDialog : public QDialog
 public:
     explicit LoginDialog(QWidget* parent = nullptr);
     ~LoginDialog() override;
+
 signals:
     void switchRegister();
+    void switchReset();
+
+private slots:
+    void slot_forget_pwd();
 
 private:
     Ui::LoginDialog* ui;

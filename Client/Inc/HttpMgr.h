@@ -58,6 +58,7 @@ signals:
      * @param err 错误码
      */
     void sig_reg_mod_finish(LA::ReqId id, QString res, LA::ErrorCodes err);
+    void sig_reset_mod_finish(LA::ReqId id, QString res, LA::ErrorCodes err);
 };
 
 

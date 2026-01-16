@@ -32,12 +32,17 @@ namespace LA
     enum class ReqId
     {
         ID_GET_VARIFY_CODE = 1001, //获取验证码
-        ID_REG_USER = 1002 //注册用户
+        ID_REG_USER = 1002, //注册用户
+        ID_RESET_PWD = 1003, //重置密码
+        ID_LOGIN_USER = 1004, //登录用户
+        ID_CHAT_LOGIN = 1005, //聊天登录
+        ID_CHAT_LOGIN_RSP = 1006 //聊天登录响应
     };
 
     enum class Modules
     {
-        REGISTERMOD = 0 //注册模块
+        REGISTERMOD = 0, //注册模块
+        RESETMOD = 1, //重置密码模块
     };
 
     enum class ErrorCodes
@@ -56,13 +61,13 @@ namespace LA
 
     enum class TipErr
     {
-        TIP_SUCCESS = 0,
-        TIP_EMAIL_ERR = 1,
-        TIP_PWD_ERR = 2,
-        TIP_CONFIRM_ERR = 3,
-        TIP_PWD_CONFIRM = 4,
-        TIP_VARIFY_ERR = 5,
-        TIP_USER_ERR = 6
+        TIP_SUCCESS = 0,//成功
+        TIP_EMAIL_ERR = 1,//邮箱格式错误
+        TIP_PWD_ERR = 2,//密码格式错误
+        TIP_CONFIRM_ERR = 3,//确认密码格式错误
+        TIP_PWD_CONFIRM = 4,//密码不一致
+        TIP_VARIFY_ERR = 5,//验证码格式错误
+        TIP_USER_ERR = 6//用户名格式错误
     };
 
     static std::function<QString(QString)> md5Hash = [](QString input)-> QString

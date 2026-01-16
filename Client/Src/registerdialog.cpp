@@ -7,7 +7,6 @@
 #include "registerdialog.h"
 #include"global.h"
 #include <QStyle>
-
 #include "HttpMgr.h"
 #include "ui_RegisterDialog.h"
 
@@ -104,6 +103,7 @@ RegisterDialog::RegisterDialog(QWidget* parent) :
         ui->tip_label->setText(str);
     });
     connect(ui->return_btn, &QPushButton::clicked, this, &RegisterDialog::on_return_btn_clicked);
+    connect(ui->cancel_btn, &QPushButton::clicked, this, &RegisterDialog::sigSwitchLogin);
 }
 
 RegisterDialog::~RegisterDialog()

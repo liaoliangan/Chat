@@ -1,11 +1,17 @@
-QDialog#LoginDialog, QDialog#RegisterDialog {
+QDialog#LoginDialog,QDialog#RegisterDialog {
     background-color: rgb(45, 45, 48);
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-#user_label, #pass_label, #confirm_label, #email_label,#varify_label {
-    font-size: 14px;        /* 设置字体大小 */
+QLabel#user_label,
+QLabel#pass_label,
+QLabel#confirm_label,
+QLabel#email_label,
+QLabel#varify_label,
+QLabel#forget_label {
+    font-size: 18px;        /* 设置字体大小 */
     font-weight: bold;      /* 设置字体加粗 */
+    color: white;
 }
 
 QPushButton {
@@ -51,4 +57,10 @@ QPushButton {
 
 #confirm_visible[state='visible_hover']{
    border-image: url(:/image/visible_hover.png);
+}
+#forget_label[state='normal'],#forget_label[state='selected']{
+    color: white;
+}
+#forget_label[state='hover'],#forget_label[state='selected_hover']{
+    color: rgb(42,112,241);
 }
