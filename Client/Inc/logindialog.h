@@ -34,6 +34,8 @@ private slots:
     void slot_forget_pwd();
     void on_login_btn_clicked();
     void slot_login_mod_finish(LA::ReqId id, QString res, LA::ErrorCodes err);
+    void slot_tcp_con_finish(bool bsuccess);
+    void slot_login_failed(int);
 private:
     Ui::LoginDialog* ui;
     QString _token;
@@ -43,10 +45,10 @@ private:
     void initHead();
     bool checkUserValid();
     bool checkPwdValid();
-    void showTip(QString str, bool b_ok);
+    void showTip(const QString& str, bool b_ok) const;
     void AddTipErr(LA::TipErr te, QString tips);
     void DelTipErr(LA::TipErr te);
-    void enableBtn(bool enable);
+    void enableBtn(bool enable) const;
     void initHttpHandlers();
 };
 

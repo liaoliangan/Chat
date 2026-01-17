@@ -10,6 +10,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include "HttpMgr.h"
+#include "TcpMgr.h"
 
 LoginDialog::LoginDialog(QWidget* parent) :
     QDialog(parent), ui(new Ui::LoginDialog)
@@ -23,6 +24,12 @@ LoginDialog::LoginDialog(QWidget* parent) :
 
     //连接登录回包信号
     connect(HttpMgr::getInstance().get(), &HttpMgr::sig_login_mod_finish, this, &LoginDialog::slot_login_mod_finish);
+    //连接tcp连接请求的信号和槽函数
+    connect(this, &LoginDialog::sig_connect_tcp, TcpMgr::getInstance().get(), &TcpMgr::slot_tcp_connect);
+    //连接tcp管理者发出的连接成功信号
+    connect(TcpMgr::getInstance().get(), &TcpMgr::sig_con_success, this, &LoginDialog::slot_tcp_con_finish);
+    //连接tcp管理者发出的登录失败信号
+    connect(TcpMgr::getInstance().get(), &TcpMgr::sig_login_failed, this, &LoginDialog::slot_login_failed);
 }
 
 LoginDialog::~LoginDialog()
@@ -46,11 +53,13 @@ void LoginDialog::on_login_btn_clicked()
     if (!checkPwdValid())
         return;
     enableBtn(false);
+    auto user = ui->user_Edit->text();
     auto email = ui->email_Edit->text();
     auto pwd = ui->pass_Edit->text();
     //发送http请求登录
     QJsonObject json_obj;
-    json_obj["user"] = email;
+    json_obj["user"] = user;
+    json_obj["email"] = email;
     json_obj["passwd"] = LA::md5Hash(pwd);
     HttpMgr::getInstance()->PostHttpReq(QUrl(gate_url_prefix + "/user_login"),
                                         json_obj, LA::ReqId::ID_LOGIN_USER, LA::Modules::LOGINMOD);
@@ -107,7 +116,7 @@ bool LoginDialog::checkPwdValid()
     return true;
 }
 
-void LoginDialog::showTip(QString str, bool b_ok)
+void LoginDialog::showTip(const QString& str, const bool b_ok) const
 {
     if (b_ok)
     {
@@ -139,7 +148,7 @@ void LoginDialog::DelTipErr(LA::TipErr te)
     showTip(_tip_errs.first(), false);
 }
 
-void LoginDialog::enableBtn(bool enable)
+void LoginDialog::enableBtn(const bool enable) const
 {
     ui->login_btn->setEnabled(enable);
     ui->reg_btn->setEnabled(enable);
@@ -150,14 +159,13 @@ void LoginDialog::initHttpHandlers()
     //注册获取登录回包逻辑
     _handlers.insert(LA::ReqId::ID_LOGIN_USER, [this](QJsonObject jsonObj)
     {
-        int error = jsonObj["error"].toInt();
-        if (error != static_cast<int>(LA::ErrorCodes::SUCCESS))
+        if (const int error = jsonObj["error"].toInt(); error != static_cast<int>(LA::ErrorCodes::SUCCESS))
         {
             showTip(tr("参数错误"), false);
             enableBtn(true);
             return;
         }
-        auto email = jsonObj["email"].toString();
+        const auto email = jsonObj["email"].toString();
 
         //发送信号通知tcpMgr发送长连接
         ServerInfo si;
@@ -208,4 +216,27 @@ void LoginDialog::initHead()
 
     //设置绘制好的圆角图片到QLabel上
     ui->head_label->setPixmap(roundedPixmap);
+}
+void LoginDialog::slot_tcp_con_finish(bool bsuccess)
+{
+    if(bsuccess){
+        showTip(tr("聊天服务连接成功，正在登录..."),true);
+        QJsonObject jsonObj;
+        jsonObj["uid"] = _uid;
+        jsonObj["token"] = _token;
+        const QJsonDocument doc(jsonObj);
+        const QString jsonString = doc.toJson(QJsonDocument::Indented);
+        //发送tcp请求给chat server
+        emit TcpMgr::getInstance()->sig_send_data(LA::ReqId::ID_CHAT_LOGIN, jsonString);
+    }else{
+        showTip(tr("网络异常"),false);
+        enableBtn(true);
+    }
+}
+
+void LoginDialog::slot_login_failed(int err)
+{
+    QString result=QString("登录失败，错误码：%1").arg(err);
+    showTip(result,false);
+    enableBtn(true);
 }

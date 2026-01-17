@@ -19,7 +19,7 @@ protected:
     static std::shared_ptr<T> __instance;
 
 public:
-    ~Singalton() { std::cout << "~Singalton()" << std::endl; }
+    virtual ~Singalton() { std::cout << "~Singalton()" << std::endl; }
 
     static std::shared_ptr<T> getInstance()
     {
