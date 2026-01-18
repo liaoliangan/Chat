@@ -307,34 +307,34 @@ void CSession::UpdateHeartbeat()
 
 void CSession::DealExceptionSession()
 {
-    auto self = shared_from_this();
-    // 加锁清除session
-    auto uid_str = std::to_string(_user_uid);
-    auto lock_key = LOCK_PREFIX + uid_str;
-    auto identifier = RedisMgr::GetInstance()->acquireLock(lock_key, LOCK_TIME_OUT, ACQUIRE_TIME_OUT);
-    Defer defer([identifier, lock_key, self, this]()
-                {
-		_server->ClearSession(_session_id);
-		RedisMgr::GetInstance()->releaseLock(lock_key, identifier); });
+    // auto self = shared_from_this();
+    // // 加锁清除session
+    // auto uid_str = std::to_string(_user_uid);
+    // auto lock_key = LOCK_PREFIX + uid_str;
+    // auto identifier = RedisMgr::GetInstance()->acquireLock(lock_key, LOCK_TIME_OUT, ACQUIRE_TIME_OUT);
+    // Defer defer([identifier, lock_key, self, this]()
+    //             {
+	// 	_server->ClearSession(_session_id);
+	// 	RedisMgr::GetInstance()->releaseLock(lock_key, identifier); });
 
-    if (identifier.empty())
-    {
-        return;
-    }
-    std::string redis_session_id = "";
-    auto bsuccess = RedisMgr::GetInstance()->Get(USER_SESSION_PREFIX + uid_str, redis_session_id);
-    if (!bsuccess)
-    {
-        return;
-    }
+    // if (identifier.empty())
+    // {
+    //     return;
+    // }
+    // std::string redis_session_id = "";
+    // auto bsuccess = RedisMgr::GetInstance()->Get(USER_SESSION_PREFIX + uid_str, redis_session_id);
+    // if (!bsuccess)
+    // {
+    //     return;
+    // }
 
-    if (redis_session_id != _session_id)
-    {
-        // 说明有客户在其他服务器异地登录了
-        return;
-    }
+    // if (redis_session_id != _session_id)
+    // {
+    //     // 说明有客户在其他服务器异地登录了
+    //     return;
+    // }
 
-    RedisMgr::GetInstance()->Del(USER_SESSION_PREFIX + uid_str);
-    // 清除用户登录信息
-    RedisMgr::GetInstance()->Del(USERIPPREFIX + uid_str);
+    // RedisMgr::GetInstance()->Del(USER_SESSION_PREFIX + uid_str);
+    // // 清除用户登录信息
+    // RedisMgr::GetInstance()->Del(USERIPPREFIX + uid_str);
 }

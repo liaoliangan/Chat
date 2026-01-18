@@ -54,7 +54,9 @@ namespace LA
         PASSWD_ERROR = 1006,         // 密码错误
         EMAIL_NOT_MATCH = 1007,      // 邮箱不匹配
         PASSWD_UPDATE_FAILED = 1008, // 密码更新失败
-        PASSWD_INVALID               // 密码无效
+        PASSWD_INVALID= 1009,               // 密码无效
+        TOKEN_INVALIED = 1010,   //Token失效
+	    UID_INVALIED = 1011,  //uid无效
     };
 };
 

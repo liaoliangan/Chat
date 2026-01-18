@@ -15,6 +15,7 @@ public:
     void Close();
     std::unique_ptr<message::StatusService::Stub> GetConnection();
     void ReturnConnection(std::unique_ptr<message::StatusService::Stub> conn);
+
 private:
     size_t poolSize_;
     std::string host_;
@@ -32,6 +33,7 @@ class StatusGrpcClient : public Singleton<StatusGrpcClient>
 public:
     ~StatusGrpcClient();
     message::GetChatServerRsp GetChatServer(int uid);
+    message::LoginRsp Login(int uid, std::string token);
 
 private:
     StatusGrpcClient();

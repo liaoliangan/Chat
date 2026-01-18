@@ -5,6 +5,7 @@
 #include "TcpMgr.h"
 #include <QJsonDocument>
 #include <utility>
+#include"UserMgr.h"
 
 TcpMgr::~TcpMgr()
 {
@@ -14,12 +15,12 @@ TcpMgr::TcpMgr(): _host(""), _port(0), _b_recv_pending(false), _message_id(0), _
 {
     connect(&_socket, &QTcpSocket::connected, [&]()
     {
-        qDebug() << "Connected to server!";
+        qDebug() << "QTcpSocket: Connected to server!";
         // 连接建立后发送消息
         emit sig_con_success(true);
     });
 
-    connect(&_socket, &QTcpSocket::readyRead, [&]()
+    connect(&_socket, &QTcpSocket::readyRead, [&]() //收到回包
     {
         // 当有数据可读时，读取所有数据
         // 读取所有数据并追加到缓冲区
@@ -113,10 +114,11 @@ TcpMgr::TcpMgr(): _host(""), _port(0), _b_recv_pending(false), _message_id(0), _
 
 void TcpMgr::handleMsg(LA::ReqId id, int len, QByteArray data)
 {
+    qDebug()<<"handleMsg: handle id is "<<static_cast<int>(id)<<" data is "<<data;
     auto find_iter = _handlers.find(id);
     if (find_iter == _handlers.end())
     {
-        qDebug() << "not found id [" << id << "] to handle";
+        qDebug() << "not found id [" << static_cast<int>(id) << "] to handle";
         return;
     }
     find_iter.value()(id, len, std::move(data));
@@ -127,11 +129,11 @@ void TcpMgr::initHandlers()
     _handlers.insert(LA::ReqId::ID_CHAT_LOGIN_RSP, [this](LA::ReqId id, const int len, const QByteArray& data)
     {
         Q_UNUSED(len);
-        qDebug() << "handle id is " << id << " data is " << data;
+        qDebug() << "handle id is " << "ID_CHAT_LOGIN_RSP" << " data is " << data;
         const QJsonDocument doc = QJsonDocument::fromJson(data);
 
         //检查转换是否成功
-        if (!doc.isNull())
+        if (doc.isNull())
         {
             qDebug() << "Failed to create QJsonDocument.";
             return;
@@ -151,6 +153,11 @@ void TcpMgr::initHandlers()
             emit sig_login_failed(err);
             return;
         }
+
+        UserMgr::getInstance()->SetUid(jsonObj["uid"].toInt());
+        UserMgr::getInstance()->SetName(jsonObj["name"].toString());
+        UserMgr::getInstance()->SetToken(jsonObj["token"].toString());
+        emit sig_switch_chatdlg();
     });
 }
 
@@ -159,8 +166,10 @@ void TcpMgr::slot_tcp_connect(const ServerInfo& si)
     qDebug() << "receive tcp connect signal";
     //连接到服务器
     qDebug() << "Connecting to server...";
+    qDebug()<<"host is "<<si.Host<<" port is "<<si.Port;
     _host = si.Host;
-    _port = si.Port.toUShort();
+    // _port = si.Port.toUShort();
+    _port = 8090;
     _socket.connectToHost(_host, _port);
 }
 

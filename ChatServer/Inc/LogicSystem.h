@@ -14,10 +14,10 @@
 #include <json/reader.h>
 #include <unordered_map>
 #include "data.h"
+#include "UserInfo.h"
 
 class CServer;
 typedef std::function<void(std::shared_ptr<CSession>, const short &msg_id, const std::string &msg_data)> FunCallBack;
-
 
 class LogicSystem : public Singleton<LogicSystem>
 {

@@ -20,7 +20,7 @@ void HttpMgr::PostHttpReq(const QUrl& url, QJsonObject json, LA::ReqId req_id, L
     QNetworkReply* reply = _manager.post(request, data);
     connect(reply, &QNetworkReply::finished, [self,reply,req_id,mod]()-> void
     {
-        //捕获self，方式回调函数执行时对象本身被析构
+        //捕获self，防止回调函数执行时对象本身被析构
         if (reply->error() != QNetworkReply::NoError)
         {
             COUT << reply->errorString().toStdString() << ENDL;
@@ -42,10 +42,10 @@ void HttpMgr::slot_http_finish(LA::ReqId id, QString res, LA::ErrorCodes err, LA
     {
         //发送信号通知指定模块
         emit sig_reg_mod_finish(id, res, err);
-    }else if (mod==LA::Modules::RESETMOD)
+    }else if (mod==LA::Modules::RESETMOD)//重置密码模块
     {
         emit sig_reset_mod_finish(id,res,err);
-    }else if (mod==LA::Modules::LOGINMOD)
+    }else if (mod==LA::Modules::LOGINMOD)//登录模块
     {
         emit sig_login_mod_finish(id,res,err);
     }
