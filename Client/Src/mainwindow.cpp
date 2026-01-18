@@ -5,6 +5,8 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
 
 #include "mainwindow.h"
+
+#include "TcpMgr.h"
 #include "ui_MainWindow.h"
 
 MainWindow::MainWindow(QWidget* parent) :
@@ -18,14 +20,13 @@ MainWindow::MainWindow(QWidget* parent) :
     //设置Dialog属性，使dialog嵌入mainwindow
     __loginDialog->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
 
-    //把注册界面移动到SlotSwitchReg，当用户注册时，动态的创建注册页面，返回时就被回收
-    // __registerDialog = new RegisterDialog(this);
-    // __registerDialog->setWindowTitle("register");
-    // __registerDialog->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
-    // __registerDialog->hide();
     //创建和注册消息连接
     connect(__loginDialog, &LoginDialog::switchRegister, this, &MainWindow::SlotSwitchReg);
-    connect(__loginDialog,&LoginDialog::switchReset,this,&MainWindow::SlotSwitchReset);
+    connect(__loginDialog, &LoginDialog::switchReset, this, &MainWindow::SlotSwitchReset);
+    connect(TcpMgr::getInstance().get(), &TcpMgr::sig_switch_chatdlg, this, &MainWindow::SlotSwitchChatDialog);
+    //方便测试，直接跳到聊天界面
+    //TODO 记得删除
+    emit TcpMgr::getInstance()->sig_switch_chatdlg();
 }
 
 MainWindow::~MainWindow()
@@ -67,6 +68,17 @@ void MainWindow::SlotSwitchReset()
     __resetDialog->show();
     //注册返回登录信号和槽函数
     connect(__resetDialog, &ResetDialog::sigSwitchLogin, this, &MainWindow::SlotSwitchLoginFromResetDialog);
+}
+
+void MainWindow::SlotSwitchChatDialog()
+{
+    __chatDialog = new ChatDialog(this);
+    __chatDialog->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+    setCentralWidget(__chatDialog);
+    __chatDialog->show();
+    __loginDialog->hide();
+    this->setMinimumSize(QSize(1050, 900));
+    this->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
 }
 
 void MainWindow::SlotSwitchLoginFromResetDialog()
