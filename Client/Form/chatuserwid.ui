@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>450</width>
     <height>70</height>
    </rect>
   </property>
@@ -95,6 +95,12 @@
    </item>
    <item>
     <widget class="QWidget" name="user_info_wid" native="true">
+     <property name="maximumSize">
+      <size>
+       <width>130</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>7</number>
@@ -120,6 +126,12 @@
       </item>
       <item>
        <widget class="QLabel" name="user_chat_label">
+        <property name="maximumSize">
+         <size>
+          <width>130</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>Hello World</string>
         </property>

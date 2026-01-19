@@ -19,6 +19,7 @@ public:
     void enterEvent(QEnterEvent* event) override;
     void leaveEvent(QEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     /**
      * @brief 设置鼠标进入label的各种状态
      * @param normal 初始闭眼图标的状态

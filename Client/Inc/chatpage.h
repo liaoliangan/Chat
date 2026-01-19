@@ -6,7 +6,7 @@
 #define CHATPAGE_H
 
 #include <QWidget>
-
+#include<QPaintEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ChatPage; }
@@ -18,7 +18,8 @@ Q_OBJECT
 public:
     explicit ChatPage(QWidget *parent = nullptr);
     ~ChatPage() override;
-
+protected:
+    void paintEvent(QPaintEvent* event) override;
 private:
     Ui::ChatPage *ui;
 };

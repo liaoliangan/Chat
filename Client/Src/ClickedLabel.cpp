@@ -60,7 +60,7 @@ void ClickedLabel::mousePressEvent(QMouseEvent* event)
         {
             COUT << "clicked , change to selected hover: " << _selected_hover.toStdString() << ENDL;
             _cur_state = LA::ClickLbState::Selected;
-            setProperty("state", _selected_hover);
+            setProperty("state", _selected_press);
             LA::repolish(this);
             update();
         }
@@ -68,14 +68,39 @@ void ClickedLabel::mousePressEvent(QMouseEvent* event)
         {
             COUT << "clicked , change to normal hover: " << _hover.toStdString() << ENDL;
             _cur_state = LA::ClickLbState::Normal;
+            setProperty("state", _press);
+            LA::repolish(this);
+            update();
+        }
+        // emit clicked();
+        return;
+    }
+    // 调用基类的mousePressEvent以保证正常的事件处理
+    QLabel::mousePressEvent(event);
+}
+
+void ClickedLabel::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        if (_cur_state == LA::ClickLbState::Normal)
+        {
+            COUT << "clicked , change to normal press: " << _press.toStdString() << ENDL;
             setProperty("state", _hover);
             LA::repolish(this);
             update();
         }
+        else
+        {
+            COUT << "clicked , change to selected press: " << _selected_press.toStdString() << ENDL;
+            setProperty("state", _selected_hover);
+            LA::repolish(this);
+            update();
+        }
         emit clicked();
+        return;
     }
-    // 调用基类的mousePressEvent以保证正常的事件处理
-    QLabel::mousePressEvent(event);
+    QLabel::mouseReleaseEvent(event);
 }
 
 void ClickedLabel::SetState(QString normal, QString hover, QString press, QString select, QString select_hover,
