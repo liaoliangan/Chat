@@ -61,6 +61,8 @@ private:
         "rust"
     };
     //TODO ----------------------------------------
+private slots:
+    void slot_loading_chat_user();
 };
 
 

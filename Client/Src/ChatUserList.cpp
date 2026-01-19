@@ -19,12 +19,16 @@ bool ChatUserList::eventFilter(QObject *watched, QEvent *event)
     if (watched == this->viewport()) {
         if (event->type() == QEvent::Enter) {
             // 鼠标悬浮，显示滚动条
+#ifdef LADEBUG
             qDebug()<<"show scrollbar";
+#endif
             this->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
             //Qt::ScrollBarAsNeeded 策略只有在内容超出可视区域时才会显示滚动条
         } else if (event->type() == QEvent::Leave) {
             // 鼠标离开，隐藏滚动条
+#ifdef LADEBUG
             qDebug()<<"hide scrollbar";
+#endif
             this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         }
     }
@@ -46,7 +50,10 @@ bool ChatUserList::eventFilter(QObject *watched, QEvent *event)
 
         if (maxScrollValue - currentValue <= 0) {
             // 滚动到底部，加载新的联系人
+#ifdef LADEBUG
             qDebug()<<"load more chat user";
+#endif
+
             //发送信号通知聊天界面加载更多聊天内容
             emit sig_loading_chat_user();
         }

@@ -10,6 +10,7 @@
 #include<QAction>
 #include"chatuserwid.h"
 #include<QRandomGenerator>
+#include"loadingdlg.h"
 
 ChatDialog::ChatDialog(QWidget* parent) :
     QDialog(parent), ui(new Ui::ChatDialog), _state(ChatUIMode::ChatMode), _b_loading(false)
@@ -53,6 +54,7 @@ ChatDialog::ChatDialog(QWidget* parent) :
         ShowSearch(false);
     });
     ShowSearch(false);
+    connect(ui->chat_user_list, &ChatUserList::sig_loading_chat_user, this, &ChatDialog::slot_loading_chat_user);
     addChatUserList();
 }
 
@@ -105,4 +107,23 @@ void ChatDialog::ShowSearch(bool bsearch)
         ui->con_user_list->show();
         _mode = ContactMode;
     }
+}
+
+void ChatDialog::slot_loading_chat_user()
+{
+    if (_b_loading)
+    {
+        return;
+    }
+
+    _b_loading = true;
+    LoadingDlg* loadingDialog = new LoadingDlg(this);
+    loadingDialog->setModal(true);
+    loadingDialog->show(); //模态对话框，代码不会阻塞在这里
+    qDebug() << "add new data to list.....";
+    addChatUserList();
+    // 加载完成后关闭对话框
+    loadingDialog->deleteLater();
+
+    _b_loading = false;
 }

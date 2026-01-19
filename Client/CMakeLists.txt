@@ -9,6 +9,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_PREFIX_PATH "D:/QT/6.5.3/mingw_64/bin")
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/Form)
 
+add_definitions(-DLADEBUG)
+
 find_package(Qt6 COMPONENTS
         Core
         Gui

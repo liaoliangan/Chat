@@ -572,6 +572,12 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <widget class="QWidget" name="chat_page"/>
+     <widget class="QWidget" name="friend_apply_page"/>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
