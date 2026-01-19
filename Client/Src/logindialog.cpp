@@ -184,10 +184,10 @@ void LoginDialog::initHttpHandlers()
 
 void LoginDialog::initHead()
 {
-    QPixmap originalPixmap(":/image/head_1.png");
+    QPixmap originalPixmap(":/image/login_ioc.png");
     if (originalPixmap.isNull())
     {
-        qDebug() << "Error: Failed to load image :/image/head_1.png";
+        qDebug() << "Error: Failed to load image :/image/login_ioc.png";
         // 设置默认图片或退出函数
         return;
     }

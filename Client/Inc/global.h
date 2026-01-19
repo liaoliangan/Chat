@@ -57,9 +57,9 @@ namespace LA
         PASSWD_ERROR = 1006, // 密码错误
         EMAIL_NOT_MATCH = 1007, // 邮箱不匹配
         PASSWD_UPDATE_FAILED = 1008, // 密码更新失败
-        PASSWD_INVALID= 1009,               // 密码无效
-        TOKEN_INVALIED = 1010,   //Token失效
-        UID_INVALIED = 1011,  //uid无效
+        PASSWD_INVALID = 1009, // 密码无效
+        TOKEN_INVALIED = 1010, //Token失效
+        UID_INVALIED = 1011, //uid无效
     };
 
     enum class TipErr
@@ -86,5 +86,22 @@ namespace LA
         Selected = 1 //睁眼状态
     };
 }
+
+enum ChatUIMode
+{
+    SearchMode, //搜索模式
+    ChatMode, //聊天模式
+    ContactMode //联系人模式
+};
+
+enum ListItemType
+{
+    CHAT_USER_ITEM, //聊天用户
+    CONTACT_USER_ITEM, //联系人用户
+    SEARCH_USER_ITEM, //搜索到的用户
+    ADD_USER_TIP_ITEM, //添加用户提示
+    INVALID_ITEM, //不可点击条目
+    GROUP_TIP_ITEM //分组提示条目
+};
 
 #endif //GLOBAL_H

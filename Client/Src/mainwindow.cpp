@@ -78,7 +78,8 @@ void MainWindow::SlotSwitchChatDialog()
     __chatDialog->show();
     __loginDialog->hide();
     this->setMinimumSize(QSize(1050, 900));
-    this->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
+    this->setMaximumSize(QSize(1050, 900));
+    // this->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
 }
 
 void MainWindow::SlotSwitchLoginFromResetDialog()

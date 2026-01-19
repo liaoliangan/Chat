@@ -20,7 +20,13 @@
         <file>image/filedir.png</file>
         <file>image/filedir_hover.png</file>
         <file>image/filedir_press.png</file>
-        <file>image/head_1.png</file>
+        <file>image/head_1.jpg</file>
+        <file>image/head_2.jpg</file>
+        <file>image/head_3.jpg</file>
+        <file>image/head_4.jpg</file>
+        <file>image/head_5.jpg</file>
+        <file>image/ice.png</file>
+        <file>image/login_ioc.png</file>
         <file>image/male.png</file>
         <file>image/msg_chat_hover.png</file>
         <file>image/msg_chat_normal.png</file>
@@ -28,6 +34,11 @@
         <file>image/red_point.png</file>
         <file>image/right_tip.png</file>
         <file>image/search.png</file>
+        <file>image/settings.png</file>
+        <file>image/settings_hover.png</file>
+        <file>image/settings_press.png</file>
+        <file>image/settings_select_hover.png</file>
+        <file>image/settings_select_press.png</file>
         <file>image/smile.png</file>
         <file>image/smile_hover.png</file>
         <file>image/smile_press.png</file>

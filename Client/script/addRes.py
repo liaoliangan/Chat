@@ -17,7 +17,7 @@ def addResFile():
     # 获取所有png文件
     png_files = []
     for filename in os.listdir(image_dir):
-        if filename.lower().endswith('.png'):
+        if filename.lower().endswith('.png') or filename.lower().endswith('.jpg'):
             png_files.append(filename)
 
     # 构建qrc文件内容

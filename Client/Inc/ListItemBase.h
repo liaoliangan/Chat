@@ -1,0 +1,29 @@
+//
+// Created by 33717 on 2026/1/19.
+//
+//所有ListItem的基类
+#ifndef LISTITEMBASE_H
+#define LISTITEMBASE_H
+
+#include<QWidget>
+#include"global.h"
+
+class ListItemBase : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ListItemBase(QWidget* parent = nullptr);
+    void SetItemType(ListItemType itemType);
+
+    ListItemType GetItemType() const;
+
+private:
+    ListItemType _itemType;
+
+public slots:
+signals:
+};
+
+
+#endif //LISTITEMBASE_H
