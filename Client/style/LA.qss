@@ -251,3 +251,13 @@ LoadingDlg{
 #file_label[state='press']{
     border-image: url(:/image/filedir_press.png);
 }
+
+#chat_area{
+    border: none;
+}
+
+#chat_user_name{
+    color: rgb(153,153,153);
+    font-size: 14px;
+    font-family: "Microsoft YaHei";
+}

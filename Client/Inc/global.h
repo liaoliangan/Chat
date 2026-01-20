@@ -104,4 +104,10 @@ enum ListItemType
     GROUP_TIP_ITEM //分组提示条目
 };
 
+enum ChatRole
+{
+    Self,
+    Other
+};
+
 #endif //GLOBAL_H
