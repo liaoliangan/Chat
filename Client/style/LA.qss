@@ -164,7 +164,7 @@ LoadingDlg{
 }
 
 #chat_edit{
-    background: #ffffff;
+    background: rgb(36, 37, 37);
     border: none; /* 隐藏边框 */
     font-family: "Microsoft YaHei"; /* 设置字体 */
     font-size: 18px; /* 设置字体大小 */
@@ -201,32 +201,31 @@ LoadingDlg{
 }
 
 #send_btn[state='normal']{
-    background: #f0f0f0;
-    color: #2cb46e;
+    background: #00ffaf;
+    color: rgb(17, 19, 18);
     font-size: 16px; /* 设置字体大小 */
     font-family: "Microsoft YaHei"; /* 设置字体 */
     border-radius: 20px; /* 设置圆角 */
 }
 
 #send_btn[state='hover']{
-   background: #d2d2d2;
-   color: #2cb46e;
+   background: #0ec38a;
+   color: rgb(17, 19, 18);
    font-size: 16px; /* 设置字体大小 */
    font-family: "Microsoft YaHei"; /* 设置字体 */
    border-radius: 20px; /* 设置圆角 */
 }
 
 #send_btn[state='press']{
-   background: #c6c6c6;
-   color: #2cb46e;
+   background: #0eb681;
+   color: rgb(17, 19, 18);
    font-size: 16px; /* 设置字体大小 */
    font-family: "Microsoft YaHei"; /* 设置字体 */
    border-radius: 20px; /* 设置圆角 */
 }
 
 #tool_widget{
-    background: #ffffff;
-    border-bottom: 0.5px solid #ececec; /* 设置下边框颜色和宽度 */
+    border-top: 0.5px solid rgb(40, 42, 41); /* 设置下边框颜色和宽度 */
 }
 
 #emo_label[state='normal']{
@@ -252,4 +251,3 @@ LoadingDlg{
 #file_label[state='press']{
     border-image: url(:/image/filedir_press.png);
 }
-
