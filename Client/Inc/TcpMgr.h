@@ -11,13 +11,14 @@
 #include<QObject>
 
 #include "ServerInfo.h"
+#include "SearchInfo.h"
 
 class TcpMgr : public QObject,
                public Singalton<TcpMgr>,
                public std::enable_shared_from_this<TcpMgr>
 {
     Q_OBJECT
-    friend class Singalton<TcpMgr>;
+    friend class Singalton;
 
 public:
     ~TcpMgr() override;
@@ -43,6 +44,7 @@ signals:
     void sig_send_data(LA::ReqId, QString data);
     void sig_switch_chatdlg();
     void sig_login_failed(int);
+    void sig_user_search(std::shared_ptr<SearchInfo>);
 };
 
 

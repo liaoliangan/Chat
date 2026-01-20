@@ -6,7 +6,8 @@
 #define CHATDIALOG_H
 
 #include <QDialog>
-#include<global.h>
+#include <global.h>
+#include "StateWidget.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -24,13 +25,16 @@ class ChatDialog : public QDialog
 public:
     explicit ChatDialog(QWidget* parent = nullptr);
     ~ChatDialog() override;
+    void AddLBGroup(StateWidget* label);
     void addChatUserList(); //TODO 输入数据用于测试，记得删除
 private:
     Ui::ChatDialog* ui;
-    void ShowSearch(bool bsearch);
     ChatUIMode _mode;
     ChatUIMode _state;
     bool _b_loading;
+    void ShowSearch(bool bsearch);
+    QList<StateWidget*> _lb_list;
+    void ClearLabelState(StateWidget* lb);
 
     //TODO 测试数据，记得删
     //TODO ----------------------------------------
@@ -63,6 +67,9 @@ private:
     //TODO ----------------------------------------
 private slots:
     void slot_loading_chat_user();
+    void slot_side_chat();
+    void slot_side_contact();
+    void slot_text_changed(const QString& str);
 };
 
 

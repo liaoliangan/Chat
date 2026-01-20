@@ -53,14 +53,44 @@ ChatDialog::ChatDialog(QWidget* parent) :
         //清除按钮被按下则不显示搜索框
         ShowSearch(false);
     });
+    ui->search_edit->setMaxLength(15);
     ShowSearch(false);
     connect(ui->chat_user_list, &ChatUserList::sig_loading_chat_user, this, &ChatDialog::slot_loading_chat_user);
     addChatUserList();
+
+
+    QPixmap pixmap(":/image/head_1.jpg");
+    ui->side_head_label->setPixmap(pixmap); // 将图片设置到QLabel上
+    QPixmap scaledPixmap = pixmap.scaled(ui->side_head_label->size(), Qt::KeepAspectRatio); // 将图片缩放到label的大小
+    ui->side_head_label->setPixmap(scaledPixmap); // 将缩放后的图片设置到QLabel上
+    ui->side_head_label->setScaledContents(true); // 设置QLabel自动缩放图片内容以适应大小
+
+    ui->side_chat_label->setProperty("state", "normal");
+
+    ui->side_chat_label->SetState("normal", "hover", "pressed", "selected_normal", "selected_hover",
+                                  "selected_pressed");
+
+    ui->side_contact_label->SetState("normal", "hover", "pressed", "selected_normal", "selected_hover",
+                                     "selected_pressed");
+
+    AddLBGroup(ui->side_chat_label);
+    AddLBGroup(ui->side_contact_label);
+
+    connect(ui->side_chat_label, &StateWidget::clicked, this, &ChatDialog::slot_side_chat);
+    connect(ui->side_contact_label, &StateWidget::clicked, this, &ChatDialog::slot_side_contact);
+
+    //连接搜索框输入变化
+    connect(ui->search_edit, &QLineEdit::textChanged, this, &ChatDialog::slot_text_changed);
 }
 
 ChatDialog::~ChatDialog()
 {
     delete ui;
+}
+
+void ChatDialog::AddLBGroup(StateWidget* label)
+{
+    _lb_list.push_back(label);
 }
 
 //TODO 测试用的，记得删除
@@ -126,4 +156,49 @@ void ChatDialog::slot_loading_chat_user()
     loadingDialog->deleteLater();
 
     _b_loading = false;
+}
+
+void ChatDialog::slot_side_chat()
+{
+#ifdef LADEBUG
+    qDebug() << "receive side chat clicked";
+#endif
+    ClearLabelState(ui->side_chat_label);
+    ui->stackedWidget->setCurrentWidget(ui->chat_page);
+    _state = ChatUIMode::ChatMode;
+    ShowSearch(false);
+}
+
+void ChatDialog::slot_side_contact()
+{
+#ifdef LADEBUG
+    qDebug() << "receive side contact clicked";
+#endif
+    ClearLabelState(ui->side_contact_label);
+    ui->stackedWidget->setCurrentWidget(ui->friend_apply_page);
+    _state = ChatUIMode::ContactMode;
+    ShowSearch(false);
+}
+
+void ChatDialog::slot_text_changed(const QString& str)
+{
+#ifdef LADEBUG
+    qDebug() << "receive slot text changed str is " << str;
+#endif
+    if (!str.isEmpty())
+        ShowSearch(true);
+}
+
+void ChatDialog::ClearLabelState(StateWidget* lb)
+{
+    for (auto& ele : _lb_list)
+    {
+        //在组里找到label
+        if (ele == lb)
+        {
+            continue;
+        }
+
+        ele->ClearState();
+    }
 }
