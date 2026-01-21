@@ -81,7 +81,7 @@ QPushButton {
 }
 
 #chat_user_widget{
-    background-color:rgb(0,0,0);
+    background-color:rgb(34,36,42);
 }
 
 #chat_user_list {
@@ -316,17 +316,18 @@ LoadingDlg{
 
 /* 搜索框列表*/
 #search_list {
+    background-color: rgb(34,36,42);
     border: none;
 }
 
 #search_list::item:selected {
-    background-color: #d3d7d4;
+    background-color: rgb(65, 71, 71);
     border: none;
     outline: none;
 }
 
 #search_list::item:hover {
-    background-color: rgb(206,207,208);
+    background-color: rgb(57, 68, 68);
     border: none;
     outline: none;
 }
@@ -337,7 +338,7 @@ LoadingDlg{
 }
 
 #invalid_item {
-    background-color: #eaeaea;
+    background-color: rgb(34,36,42);
     border: none;
 }
 
@@ -353,4 +354,37 @@ LoadingDlg{
   text-align: center;
   font-family: "Microsoft YaHei";
   font-size: 12pt;
+}
+#FindSuccessDialog{
+   background-color: rgb(79, 83, 83);
+}
+
+#name_label{
+    font-size: 14px;
+    color: rgb(203, 228, 228);
+    font-family: "Microsoft YaHei";
+}
+
+#add_friend_btn[state='normal']{
+    background: #07c160;
+    color: #ffffff;
+    font-size: 14px; /* 设置字体大小 */
+    font-family: "Microsoft YaHei"; /* 设置字体 */
+    border-radius: 20px; /* 设置圆角 */
+}
+
+#add_friend_btn[state='hover']{
+    background: #3bbb4b;
+    color: #ffffff;
+    font-size: 14px; /* 设置字体大小 */
+    font-family: "Microsoft YaHei"; /* 设置字体 */
+    border-radius: 20px; /* 设置圆角 */
+}
+
+#add_friend_btn[state='press']{
+   background: #07c160;
+   color: #ffffff;
+   font-size: 14px; /* 设置字体大小 */
+   font-family: "Microsoft YaHei"; /* 设置字体 */
+   border-radius: 20px; /* 设置圆角 */
 }

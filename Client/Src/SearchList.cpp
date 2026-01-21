@@ -3,15 +3,19 @@
 //
 
 #include "SearchList.h"
+
+#include <thread>
+
 #include "TcpMgr.h"
 #include "adduseritem.h"
+#include "findsuccessdialog.h"
 
 SearchList::SearchList(QWidget* parent): QListWidget(parent),
                                          _find_dlg(nullptr), _search_edit(nullptr), _send_pending(false)
 {
     Q_UNUSED(parent);
-    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //隐藏滚动条
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); //隐藏滚动条
     // 安装事件过滤器
     this->viewport()->installEventFilter(this);
     //连接点击的信号和槽
@@ -88,6 +92,48 @@ void SearchList::addTipItem()
 
 void SearchList::slot_item_clicked(QListWidgetItem* item)
 {
+    QWidget* widget = this->itemWidget(item); //获取自定义widget对象
+    if (!widget)
+    {
+#ifdef LADEBUG
+        qDebug() << "slot item clicked widget is nullptr";
+#endif
+
+        return;
+    }
+
+    // 对自定义widget进行操作， 将item 转化为基类ListItemBase
+    ListItemBase* customItem = qobject_cast<ListItemBase*>(widget);
+    if (!customItem)
+    {
+#ifdef LADEBUG
+        qDebug() << "slot item clicked widget is nullptr";
+#endif
+
+        return;
+    }
+
+    auto itemType = customItem->GetItemType();
+    if (itemType == ListItemType::INVALID_ITEM)
+    {
+#ifdef LADEBUG
+        qDebug() << "slot invalid item clicked ";
+#endif
+
+        return;
+    }
+
+    if (itemType == ListItemType::ADD_USER_TIP_ITEM)
+    {
+        //todo ...
+        _find_dlg = std::make_shared<FindSuccessDialog>(this);
+        auto si = std::make_shared<SearchInfo>(0, "廖日音", "LA", "hello , my friend!", 0);
+        (std::dynamic_pointer_cast<FindSuccessDialog>(_find_dlg))->SetSearchInfo(si);
+        _find_dlg->show();
+        return;
+    }
+    //清除弹出框
+    CloseFindDlg();
 }
 
 void SearchList::slot_user_search(std::shared_ptr<SearchInfo> si)

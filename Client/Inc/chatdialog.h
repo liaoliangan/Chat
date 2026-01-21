@@ -27,6 +27,8 @@ public:
     ~ChatDialog() override;
     void AddLBGroup(StateWidget* label);
     void addChatUserList(); //TODO 输入数据用于测试，记得删除
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 private:
     Ui::ChatDialog* ui;
     ChatUIMode _mode;
@@ -35,7 +37,7 @@ private:
     void ShowSearch(bool bsearch);
     QList<StateWidget*> _lb_list;
     void ClearLabelState(StateWidget* lb);
-
+    void handleGlobalMousePress(QMouseEvent* mouse_event);
     //TODO 测试数据，记得删
     //TODO ----------------------------------------
     std::vector<QString> strs = {

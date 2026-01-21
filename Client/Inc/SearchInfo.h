@@ -6,10 +6,13 @@
 #define SEARCHINFO_H
 
 #include<QString>
+#include<ostream>
 
 class SearchInfo
 {
 public:
+    friend std::ostream& operator<<(std::ostream& os, const SearchInfo& si);
+    friend QDebug operator<<(QDebug debug, const SearchInfo& si);
     SearchInfo(int uid, QString name, QString nick, QString desc, int sex);
     int _uid;
     QString _name;
@@ -18,5 +21,6 @@ public:
     int _sex;
 };
 
-
+std::ostream& operator<<(std::ostream& os, const SearchInfo& si);
+QDebug operator<<(QDebug debug, const SearchInfo& si);
 #endif //SEARCHINFO_H
