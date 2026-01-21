@@ -31,7 +31,6 @@ int main(int argc, char* argv[])
 {
     qInstallMessageHandler(myMessageHandler); // 接管 Qt 日志
 
-
     QApplication a(argc, argv);
     new FindSuccessDialog;
     QFile style(":/style/LA.qss");

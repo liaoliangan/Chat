@@ -13,12 +13,13 @@ class SearchInfo
 public:
     friend std::ostream& operator<<(std::ostream& os, const SearchInfo& si);
     friend QDebug operator<<(QDebug debug, const SearchInfo& si);
-    SearchInfo(int uid, QString name, QString nick, QString desc, int sex);
+    SearchInfo(int uid, QString name, QString nick, QString desc, int sex, QString icon);
     int _uid;
     QString _name;
     QString _nick;
     QString _desc;
     int _sex;
+    QString _icon;
 };
 
 std::ostream& operator<<(std::ostream& os, const SearchInfo& si);

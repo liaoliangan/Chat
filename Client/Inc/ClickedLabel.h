@@ -32,7 +32,8 @@ public:
     void SetState(QString normal = "", QString hover = "", QString press = "",
                   QString select = "", QString select_hover = "", QString select_press = "");
     LA::ClickLbState GetCurState();
-
+    bool SetCurState(LA::ClickLbState state);
+    void ResetNormalState();
 private:
     QString _normal;
     QString _hover;
@@ -42,7 +43,7 @@ private:
     QString _selected_press;
     LA::ClickLbState _cur_state;
 signals:
-    void clicked(void);
+    void clicked(QString, LA::ClickLbState);
 };
 
 

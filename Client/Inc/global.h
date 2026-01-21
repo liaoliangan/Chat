@@ -24,7 +24,11 @@
 #define ENDL std::endl
 
 inline QString gate_url_prefix = "";
+const int  tip_offset = 5;
 
+//申请好友标签输入框最低长度
+const int MIN_APPLY_LABEL_ED_LEN = 40;
+const QString add_prefix = "添加标签 ";
 namespace LA
 {
     extern std::function<void(QWidget*)> repolish; //刷新，使qss生效

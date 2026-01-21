@@ -22,11 +22,13 @@ find_package(Qt6 COMPONENTS
 
 qt_standard_project_setup()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Inc)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dataStruct)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-debug/Client_autogen/include)
 
 file(GLOB SRCFILE ${CMAKE_CURRENT_SOURCE_DIR}/Src/*.cpp)
 file(GLOB UIFILE ${CMAKE_CURRENT_SOURCE_DIR}/Form/*.ui)
 file(GLOB INCFILE ${CMAKE_CURRENT_SOURCE_DIR}/Inc/*.h)
+file(GLOB DATAFILE ${CMAKE_CURRENT_SOURCE_DIR}/dataStruct/*)
 
 set(RESOURCE_FILES
         res.qrc  # 你的资源文件名
@@ -37,6 +39,7 @@ add_executable(Client main.cpp
         ${SRCFILE}
         ${INCFILE}
         ${RESOURCE_FILES}
+        ${DATAFILE}
 )
 target_link_libraries(Client
         Qt::Core

@@ -114,7 +114,7 @@ TcpMgr::TcpMgr(): _host(""), _port(0), _b_recv_pending(false), _message_id(0), _
 
 void TcpMgr::handleMsg(LA::ReqId id, int len, QByteArray data)
 {
-    qDebug()<<"handleMsg: handle id is "<<static_cast<int>(id)<<" data is "<<data;
+    qDebug() << "handleMsg: handle id is " << static_cast<int>(id) << " data is " << data;
     auto find_iter = _handlers.find(id);
     if (find_iter == _handlers.end())
     {
@@ -154,8 +154,8 @@ void TcpMgr::initHandlers()
             return;
         }
 
-        UserMgr::getInstance()->SetUid(jsonObj["uid"].toInt());
-        UserMgr::getInstance()->SetName(jsonObj["name"].toString());
+        UserMgr::getInstance()->SetUserInfo(
+            std::make_shared<UserInfo>(jsonObj["uid"].toInt(), jsonObj["name"].toString(), "", "", 0));
         UserMgr::getInstance()->SetToken(jsonObj["token"].toString());
         emit sig_switch_chatdlg();
     });
@@ -166,7 +166,7 @@ void TcpMgr::slot_tcp_connect(const ServerInfo& si)
     qDebug() << "receive tcp connect signal";
     //连接到服务器
     qDebug() << "Connecting to server...";
-    qDebug()<<"host is "<<si.Host<<" port is "<<si.Port;
+    qDebug() << "host is " << si.Host << " port is " << si.Port;
     _host = si.Host;
     // _port = si.Port.toUShort();
     _port = 8090;

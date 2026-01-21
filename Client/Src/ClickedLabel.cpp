@@ -97,7 +97,7 @@ void ClickedLabel::mouseReleaseEvent(QMouseEvent* event)
             LA::repolish(this);
             update();
         }
-        emit clicked();
+        emit clicked(this->text(), _cur_state);
         return;
     }
     QLabel::mouseReleaseEvent(event);
@@ -121,4 +121,25 @@ void ClickedLabel::SetState(QString normal, QString hover, QString press, QStrin
 LA::ClickLbState ClickedLabel::GetCurState()
 {
     return _cur_state;
+}
+
+bool ClickedLabel::SetCurState(LA::ClickLbState state)
+{
+    _cur_state = state;
+    if (_cur_state == LA::ClickLbState::Normal) {
+        setProperty("state", _normal);
+        LA::repolish(this);
+    }
+    else if (_cur_state == LA::ClickLbState::Selected) {
+        setProperty("state", _selected);
+        LA::repolish(this);
+    }
+
+    return true;
+}
+void ClickedLabel::ResetNormalState()
+{
+    _cur_state = LA::ClickLbState::Normal;
+    setProperty("state", _normal);
+    LA::repolish(this);
 }
