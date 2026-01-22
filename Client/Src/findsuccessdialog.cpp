@@ -8,11 +8,12 @@
 
 #include <QDir>
 
+#include "applyfriend.h"
 #include "ui_FindSuccessDialog.h"
 
 
 FindSuccessDialog::FindSuccessDialog(QWidget* parent) :
-    QDialog(parent), ui(new Ui::FindSuccessDialog)
+    QDialog(parent), ui(new Ui::FindSuccessDialog), _parent(parent)
 {
     ui->setupUi(this);
     //设置对话框标题
@@ -35,7 +36,7 @@ FindSuccessDialog::FindSuccessDialog(QWidget* parent) :
                                Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->head_label->setPixmap(head_pix);
     ui->add_friend_btn->SetState("normal", "hover", "press");
-    this->setModal(true);//模态对话框
+    this->setModal(true); //模态对话框
 }
 
 FindSuccessDialog::~FindSuccessDialog()
@@ -46,10 +47,11 @@ FindSuccessDialog::~FindSuccessDialog()
 
     delete ui;
 }
+
 auto FindSuccessDialog::SetSearchInfo(std::shared_ptr<SearchInfo> si) -> void
 {
 #ifdef LADEBUG
-    qDebug()<<"SetSearchInfo(): "<<*(si.get());
+    qDebug() << "SetSearchInfo(): " << *(si.get());
 #endif
 
     ui->name_label->setText(si->_name);
@@ -58,5 +60,24 @@ auto FindSuccessDialog::SetSearchInfo(std::shared_ptr<SearchInfo> si) -> void
 
 auto FindSuccessDialog::on_add_friend_btn_clicked() -> void
 {
-    //TODO... 添加好友界面弹出
+    this->hide();
+    //弹出加好友界面
+#ifdef LADEBUG
+    qDebug()<<"on_add_friend_btn_clicked()";
+#endif
+
+    auto applyFriend = new ApplyFriend(_parent);
+#ifdef LADEBUG
+    qDebug()<<"applyFriend is "<<applyFriend;
+#endif
+#ifdef LADEBUG
+    qDebug()<<"si: "<<*(_si.get());
+#endif
+    applyFriend->SetSearchInfo(_si);
+#ifdef LADEBUG
+    qDebug()<<"applyFriend->SetSearchInfo(_si)";
+#endif
+
+    applyFriend->setModal(true);
+    applyFriend->show();
 }

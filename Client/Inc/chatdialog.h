@@ -6,7 +6,7 @@
 #define CHATDIALOG_H
 
 #include <QDialog>
-#include <global.h>
+#include "global.h"
 #include "StateWidget.h"
 
 QT_BEGIN_NAMESPACE
@@ -38,35 +38,6 @@ private:
     QList<StateWidget*> _lb_list;
     void ClearLabelState(StateWidget* lb);
     void handleGlobalMousePress(QMouseEvent* mouse_event);
-    //TODO 测试数据，记得删
-    //TODO ----------------------------------------
-    std::vector<QString> strs = {
-        "hello world !",
-        "nice to meet u",
-        "New year，new life",
-        "You have to love yourself",
-        "My love is written in the wind ever since the whole world is you"
-    };
-
-    std::vector<QString> heads = {
-        ":/image/head_1.jpg",
-        ":/image/head_2.jpg",
-        ":/image/head_3.jpg",
-        ":/image/head_4.jpg",
-        ":/image/head_5.jpg"
-    };
-
-    std::vector<QString> names = {
-        "llfc",
-        "zack",
-        "golang",
-        "cpp",
-        "java",
-        "nodejs",
-        "python",
-        "rust"
-    };
-    //TODO ----------------------------------------
 private slots:
     void slot_loading_chat_user();
     void slot_side_chat();

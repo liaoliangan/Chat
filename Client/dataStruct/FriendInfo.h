@@ -6,8 +6,8 @@
 #define FRIENDINFO_H
 
 #include <QString>
-#include "AuthInfo"
-#include "AuthRsp"
+#include "AuthInfo.h"
+#include "AuthRsp.h"
 
 struct TextChatData;
 struct FriendInfo {

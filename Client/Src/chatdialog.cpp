@@ -7,10 +7,10 @@
 #include "chatdialog.h"
 #include "ui_ChatDialog.h"
 #include "ClickedBtn.h"
-#include<QAction>
-#include"chatuserwid.h"
-#include<QRandomGenerator>
-#include"loadingdlg.h"
+#include <QAction>
+#include "chatuserwid.h"
+#include <QRandomGenerator>
+#include "loadingdlg.h"
 
 ChatDialog::ChatDialog(QWidget* parent) :
     QDialog(parent), ui(new Ui::ChatDialog), _state(ChatUIMode::ChatMode), _b_loading(false)

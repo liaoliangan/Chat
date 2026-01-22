@@ -24,11 +24,42 @@
 #define ENDL std::endl
 
 inline QString gate_url_prefix = "";
-const int  tip_offset = 5;
+const int tip_offset = 5;
 
 //申请好友标签输入框最低长度
 const int MIN_APPLY_LABEL_ED_LEN = 40;
 const QString add_prefix = "添加标签 ";
+
+//TODO 测试数据,记得删
+//----------------------------------------------------------------------------
+const std::vector<QString> strs = {
+    "hello world !",
+    "nice to meet u",
+    "New year，new life",
+    "You have to love yourself",
+    "My love is written in the wind ever since the whole world is you"
+};
+
+const std::vector<QString> heads = {
+    ":/image/head_1.jpg",
+    ":/image/head_2.jpg",
+    ":/image/head_3.jpg",
+    ":/image/head_4.jpg",
+    ":/image/head_5.jpg"
+};
+
+const std::vector<QString> names = {
+    "HanMeiMei",
+    "Lily",
+    "Ben",
+    "Androw",
+    "Max",
+    "Summer",
+    "Candy",
+    "Hunter"
+};
+//----------------------------------------------------------------------------
+
 namespace LA
 {
     extern std::function<void(QWidget*)> repolish; //刷新，使qss生效
@@ -103,9 +134,11 @@ enum ListItemType
     CHAT_USER_ITEM, //聊天用户
     CONTACT_USER_ITEM, //联系人用户
     SEARCH_USER_ITEM, //搜索到的用户
-    ADD_USER_TIP_ITEM, //添加用户提示
+    ADD_USER_TIP_ITEM, //提示添加用户
     INVALID_ITEM, //不可点击条目
-    GROUP_TIP_ITEM //分组提示条目
+    GROUP_TIP_ITEM, //分组提示条目
+    LINE_ITEM, //分割线
+    APPLY_FRIEND_ITEM, //好友申请
 };
 
 enum ChatRole

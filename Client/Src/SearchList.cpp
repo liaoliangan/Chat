@@ -127,7 +127,7 @@ void SearchList::slot_item_clicked(QListWidgetItem* item)
     {
         //todo ...
         _find_dlg = std::make_shared<FindSuccessDialog>(this);
-        auto si = std::make_shared<SearchInfo>(0, "廖日音", "LA", "hello , my friend!", 0,"");
+        auto si = std::make_shared<SearchInfo>(0, "LiaoRiYin", "LA", "hello , my friend!", 0,"");
         (std::dynamic_pointer_cast<FindSuccessDialog>(_find_dlg))->SetSearchInfo(si);
         _find_dlg->show();
         return;

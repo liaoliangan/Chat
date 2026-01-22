@@ -9,6 +9,7 @@
 ClickedBtn::ClickedBtn(QWidget* parent): QPushButton(parent)
 {
     setCursor(Qt::PointingHandCursor);//经典小手
+    setFocusPolicy(Qt::NoFocus);//回车时不会触发按钮的点击事件
 }
 
 ClickedBtn::~ClickedBtn()= default;

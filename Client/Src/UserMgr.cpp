@@ -2,7 +2,7 @@
 
 UserMgr::~UserMgr()
 {
-
+    qDebug()<<"~UserMgr()";
 }
 
 void UserMgr::SetUserInfo(std::shared_ptr<UserInfo> user_info) {
@@ -21,6 +21,7 @@ int UserMgr::GetUid()
 
 QString UserMgr::GetName()
 {
+    qDebug()<<"UserMgr::GetName: "<<_user_info->_name;
     return _user_info->_name;
 }
 
@@ -41,5 +42,9 @@ QString UserMgr::GetDesc()
 
 UserMgr::UserMgr()
 {
-
+    qDebug()<<"UserMgr()";
+}
+std::vector<std::shared_ptr<ApplyInfo> > UserMgr::GetApplyList()
+{
+    return _apply_list;
 }

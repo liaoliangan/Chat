@@ -6,11 +6,11 @@
 #define USERINFO_H
 #include <QString>
 #include <memory>
-#include "AuthInfo"
-#include "AuthRsp"
+#include "AuthInfo.h"
+#include "AuthRsp.h"
 #include "SearchInfo.h"
-#include "FriendInfo"
-#include "TextChatData"
+#include "FriendInfo.h"
+#include "TextChatData.h"
 
 struct UserInfo {
     UserInfo(int uid, QString name, QString nick, QString icon, int sex, QString last_msg = "", QString desc=""):

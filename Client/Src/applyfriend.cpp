@@ -13,15 +13,14 @@
 
 
 ApplyFriend::ApplyFriend(QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::ApplyFriend), _label_point(2, 6)
+    QDialog(parent),ui(new Ui::ApplyFriend), _label_point(2, 6)
 {
     ui->setupUi(this);
     // 隐藏对话框标题栏
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
     this->setObjectName("ApplyFriend");
     this->setModal(true);
-    ui->name_edit->setPlaceholderText(tr("恋恋风辰"));
+    ui->name_edit->setPlaceholderText(tr("lalalala"));
     ui->label_edit->setPlaceholderText("搜索、添加标签");
     ui->back_edit->setPlaceholderText("燃烧的胸毛");
 
@@ -55,6 +54,10 @@ ApplyFriend::ApplyFriend(QWidget* parent) :
     //连接确认和取消按钮的槽函数
     connect(ui->cancel_btn, &QPushButton::clicked, this, &ApplyFriend::SlotApplyCancel);
     connect(ui->sure_btn, &QPushButton::clicked, this, &ApplyFriend::SlotApplySure);
+#ifdef LADEBUG
+    qDebug()<<"finish ApplyFriend construct";
+#endif
+
 }
 
 ApplyFriend::~ApplyFriend()
@@ -126,10 +129,26 @@ bool ApplyFriend::eventFilter(QObject* obj, QEvent* event)
 void ApplyFriend::SetSearchInfo(std::shared_ptr<SearchInfo> si)
 {
     _si = si;
-    auto applyname = UserMgr::getInstance()->GetName();
+    // auto applyname = UserMgr::getInstance()->GetName();
+    //TODO 因为实在TcpMgr中，登录的回调函数中设置的UserMgr中的UserInfo
+    //TODO 因此在这里UserInfo为空指针，所以GetName会崩溃，测试完记得删除
+    auto applyname="liaoriyin";
+#ifdef LADEBUG
+    qDebug() << "apply name:" << applyname;
+#endif
     auto bakname = si->_name;
+#ifdef LADEBUG
+    qDebug() << "apply name:" << applyname << "back name:" << bakname;
+#endif
     ui->name_edit->setText(applyname);
+#ifdef LADEBUG
+    qDebug() << "setText:" << applyname;
+#endif
     ui->back_edit->setText(bakname);
+#ifdef LADEBUG
+    qDebug() << "apply name:" << applyname << "back name:" << bakname;
+#endif
+
 }
 
 void ApplyFriend::ShowMoreLabel()
@@ -315,7 +334,7 @@ void ApplyFriend::SlotLabelEnter()
         find_add.value()->SetCurState(LA::ClickLbState::Selected);
         return;
     }
-
+    //没有找到，说明该标签没有添加
     //标签展示栏也增加一个标签, 并设置绿色选中
     auto* lb = new ClickedLabel(ui->label_list);
     lb->SetState("normal", "hover", "pressed", "selected_normal",

@@ -8,7 +8,7 @@
 #include<QString>
 #include<QJsonArray>
 #include <QJsonObject>
-#include"TextChatData"
+#include"TextChatData.h"
 
 struct TextChatMsg{
     TextChatMsg(int fromuid, int touid, QJsonArray arrays):

@@ -10,6 +10,7 @@
 #include<functional>
 #include<QObject>
 
+#include "AuthRsp.h"
 #include "ServerInfo.h"
 #include "SearchInfo.h"
 
@@ -44,6 +45,7 @@ signals:
     void sig_send_data(LA::ReqId, QString data);
     void sig_switch_chatdlg();
     void sig_login_failed(int);
+    void sig_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp);
     void sig_user_search(std::shared_ptr<SearchInfo>);
 };
 
