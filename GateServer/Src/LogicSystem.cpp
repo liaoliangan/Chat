@@ -210,6 +210,7 @@ LogicSystem::LogicSystem()
         return true;
     }
     auto name = src_root["user"].asString();
+    auto email = src_root["email"].asString();
     auto pwd = src_root["passwd"].asString();
     UserInfo userInfo;
     //查询数据库判断用户名和密码是否匹配
@@ -232,12 +233,16 @@ LogicSystem::LogicSystem()
     }
     std::cout << "succeed to load userinfo uid is " << userInfo.uid << std::endl;
     root["error"] = 0;
+    root["email"] = email;
     root["user"] = name;
     root["uid"] = userInfo.uid;
     root["token"] = reply.token();
     root["host"] = reply.host();
+    root["port"] = reply.port();
     std::string jsonstr = root.toStyledString();
     boost::beast::ostream(connection->_response.body()) << jsonstr;
+    std::cout << "succeed to get chat server" << std::endl;
+    std::cout<<"token is "<<reply.token()<<std::endl;
     return true; });
 }
 LogicSystem::~LogicSystem() = default;

@@ -3,7 +3,6 @@
 
 #include "const.h"
 #include "Defer"
-#include "UserInfo.h"
 #include <thread>
 #include <mysql-cppconn/jdbc/mysql_driver.h>
 #include <mysql-cppconn/jdbc/mysql_connection.h>

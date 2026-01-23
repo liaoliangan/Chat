@@ -1,0 +1,14 @@
+#ifndef DEFER
+#define DEFER
+
+#include <functional>
+class Defer
+{
+public:
+    Defer(std::function<void()> fun):fn(fun) {}
+    ~Defer() { fn(); }
+private:
+    std::function<void()> fn;
+};
+
+#endif

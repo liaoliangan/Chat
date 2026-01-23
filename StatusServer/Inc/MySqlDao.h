@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 #include "MySqlPool.h"
-
+#include "data/UserInfo.h"
 class MysqlDao
 {
 public:

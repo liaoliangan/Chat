@@ -112,6 +112,13 @@ bool LoginDialog::checkPwdValid()
         AddTipErr(LA::TipErr::TIP_PWD_ERR, tr("密码设置不合法"));
         return false;
     }
+    // QRegularExpression regExp("^[a-zA-A0-9!@#$%^&*.]{6-15}");
+    // bool match=regExp.match(pwd).hasMatch();
+    // if (!match)
+    // {
+    //     AddTipErr(LA::TipErr::TIP_PWD_ERR, tr("密码设置不合法"));
+    //     return false;
+    // }
     DelTipErr(LA::TipErr::TIP_PWD_ERR);
     return true;
 }

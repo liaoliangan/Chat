@@ -18,6 +18,7 @@ int main()
                 return;
             }
             ioc.stop(); });
+        std::cout << "GateServer Start" << std::endl;
         std::make_shared<CServer>(ioc, port)->Start();
         ioc.run();
     }

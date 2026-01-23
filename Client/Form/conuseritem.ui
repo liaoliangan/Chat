@@ -108,7 +108,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="user_name_lb">
      <property name="text">
       <string/>
      </property>
