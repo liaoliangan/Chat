@@ -209,7 +209,6 @@ void CSession::HandleWrite(const boost::system::error_code &error, std::shared_p
     // 增加异常处理
     try
     {
-        auto self = shared_from_this();
         if (!error)
         {
             std::lock_guard<std::mutex> lock(_send_lock);

@@ -2,7 +2,7 @@
 #define MYSQLMGR_H
 
 #include "const.h"
-#include "UserInfo.h"
+#include "data.h"
 #include "MySqlDao.h"
 #include "Singleton.h"
 class MysqlMgr : public Singleton<MysqlMgr>
@@ -17,6 +17,11 @@ public:
     bool CheckPwd(const std::string& name, const std::string& pwd, UserInfo& userInfo);
     std::shared_ptr<UserInfo> GetUser(int uid);
 	std::shared_ptr<UserInfo> GetUser(std::string name);
+    bool AddFriendApply(const int& from, const int& to);
+	bool AuthFriendApply(const int& from, const int& to);
+	bool AddFriend(const int& from, const int& to, std::string back_name);
+    bool GetApplyList(int touid, std::vector<std::shared_ptr<ApplyInfo>>& applyList, int begin, int limit=10);
+	bool GetFriendList(int self_id, std::vector<std::shared_ptr<UserInfo> >& user_info);
 private:
     MysqlMgr();
     MysqlDao _dao;

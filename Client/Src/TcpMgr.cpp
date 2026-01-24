@@ -159,6 +159,48 @@ void TcpMgr::initHandlers()
         UserMgr::getInstance()->SetToken(jsonObj["token"].toString());
         emit sig_switch_chatdlg();
     });
+
+    _handlers.insert(LA::ReqId::ID_SEARCH_USER_RSP, [this](LA::ReqId id, int len, QByteArray data)
+    {
+        Q_UNUSED(len);
+        qDebug() << "handle id is " << static_cast<int>(id) << " data is " << data;
+        // 将QByteArray转换为QJsonDocument
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+        // 检查转换是否成功
+        if (jsonDoc.isNull())
+        {
+            qDebug() << "Failed to create QJsonDocument.";
+            return;
+        }
+
+        QJsonObject jsonObj = jsonDoc.object();
+
+        if (!jsonObj.contains("error"))
+        {
+            int err = static_cast<int>(LA::ErrorCodes::ERROR_JSON);
+            qDebug() << "Search Failed, err is Json Parse Err" << err;
+            emit sig_login_failed(err);
+            return;
+        }
+
+        int err = jsonObj["error"].toInt();
+        if (err != static_cast<int>(LA::ErrorCodes::SUCCESS))
+        {
+            qDebug() << "Search Failed, err is " << err;
+            emit sig_user_search(nullptr);
+            return;
+        }
+
+        auto search_info = std::make_shared<SearchInfo>(jsonObj["uid"].toInt(),
+                                                        jsonObj["name"].toString(),
+                                                        jsonObj["nick"].toString(),
+                                                        jsonObj["desc"].toString(),
+                                                        jsonObj["sex"].toInt(),
+                                                        jsonObj["icon"].toString());
+
+        emit sig_user_search(search_info);
+    });
 }
 
 void TcpMgr::slot_tcp_connect(const ServerInfo& si)
@@ -173,10 +215,10 @@ void TcpMgr::slot_tcp_connect(const ServerInfo& si)
     _socket.connectToHost(_host, _port);
 }
 
-void TcpMgr::slot_send_data(LA::ReqId reqId, QString data)
+void TcpMgr::slot_send_data(LA::ReqId reqId, QByteArray data)
 {
     const quint16 id = static_cast<quint16>(reqId);
-    const QByteArray dataBytes = data.toUtf8();
+    // const QByteArray dataBytes = data;
     const quint16 len = static_cast<quint16>(data.size());
     //创建一个QByteArray用来存储发送的所有数据
     QByteArray block;
@@ -186,7 +228,7 @@ void TcpMgr::slot_send_data(LA::ReqId reqId, QString data)
     //写入ID和长度
     out << id << len;
     //添加字符串数据
-    block.append(dataBytes);
+    block.append(data);
     //发送数据
     _socket.write(block);
 }

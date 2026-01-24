@@ -39,10 +39,10 @@ private:
 
 public slots:
     void slot_tcp_connect(const ServerInfo&);
-    void slot_send_data(LA::ReqId, QString data);
+    void slot_send_data(LA::ReqId, QByteArray data);
 signals:
     void sig_con_success(bool success);
-    void sig_send_data(LA::ReqId, QString data);
+    void sig_send_data(LA::ReqId, QByteArray data);
     void sig_switch_chatdlg();
     void sig_login_failed(int);
     void sig_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp);

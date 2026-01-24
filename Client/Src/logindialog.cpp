@@ -232,9 +232,9 @@ void LoginDialog::slot_tcp_con_finish(bool bsuccess)
         jsonObj["uid"] = _uid;
         jsonObj["token"] = _token;
         const QJsonDocument doc(jsonObj);
-        const QString jsonString = doc.toJson(QJsonDocument::Indented);
+        const QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
         //发送tcp请求给chat server
-        emit TcpMgr::getInstance()->sig_send_data(LA::ReqId::ID_CHAT_LOGIN, jsonString);
+        emit TcpMgr::getInstance()->sig_send_data(LA::ReqId::ID_CHAT_LOGIN, jsonData);
     }else{
         showTip(tr("网络异常"),false);
         enableBtn(true);

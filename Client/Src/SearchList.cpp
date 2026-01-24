@@ -3,12 +3,14 @@
 //
 
 #include "SearchList.h"
-
+#include <QJsonDocument>
 #include <thread>
-
 #include "TcpMgr.h"
 #include "adduseritem.h"
+#include "CustomizeEdit.h"
+#include "findfaildialog.h"
 #include "findsuccessdialog.h"
+#include "loadingdlg.h"
 
 SearchList::SearchList(QWidget* parent): QListWidget(parent),
                                          _find_dlg(nullptr), _search_edit(nullptr), _send_pending(false)
@@ -32,6 +34,7 @@ void SearchList::CloseFindDlg()
 
 void SearchList::SetSearchEdit(QWidget* edit)
 {
+    _search_edit = edit;
 }
 
 bool SearchList::eventFilter(QObject* watched, QEvent* event)
@@ -68,6 +71,19 @@ bool SearchList::eventFilter(QObject* watched, QEvent* event)
 
 void SearchList::waitPending(bool pending)
 {
+    if (pending)
+    {
+        _loadingDialog = new LoadingDlg(this);
+        _loadingDialog->setModal(true);
+        _loadingDialog->show();
+        _send_pending = pending;
+    }
+    else
+    {
+        _loadingDialog->hide();
+        _loadingDialog->deleteLater();
+        _send_pending = pending;
+    }
 }
 
 void SearchList::addTipItem()
@@ -114,7 +130,7 @@ void SearchList::slot_item_clicked(QListWidgetItem* item)
     }
 
     auto itemType = customItem->GetItemType();
-    if (itemType == ListItemType::INVALID_ITEM)
+    if (itemType == INVALID_ITEM)
     {
 #ifdef LADEBUG
         qDebug() << "slot invalid item clicked ";
@@ -123,13 +139,32 @@ void SearchList::slot_item_clicked(QListWidgetItem* item)
         return;
     }
 
-    if (itemType == ListItemType::ADD_USER_TIP_ITEM)
+    if (itemType == ADD_USER_TIP_ITEM)
     {
-        //todo ...
-        _find_dlg = std::make_shared<FindSuccessDialog>(this);
-        auto si = std::make_shared<SearchInfo>(0, "LiaoRiYin", "LA", "hello , my friend!", 0,"");
-        (std::dynamic_pointer_cast<FindSuccessDialog>(_find_dlg))->SetSearchInfo(si);
-        _find_dlg->show();
+        if (_send_pending) // 正在发送请求
+        {
+#ifdef LADEBUG
+            qDebug() << "slot item clicked but pending";
+#endif
+
+            return;
+        }
+        if (!_search_edit)
+        {
+#ifdef LADEBUG
+            qDebug() << "slot item clicked but search edit is nullptr";
+#endif
+
+            return;
+        }
+        waitPending(true); //不希望点击，加一个蒙版
+        auto search_edit = dynamic_cast<CustomizeEdit*>(_search_edit);
+        auto uid_str = search_edit->text();
+        QJsonObject jsonObj;
+        jsonObj["uid"] = uid_str;
+        const QJsonDocument doc(jsonObj);
+        QByteArray jsonData = doc.toJson(QJsonDocument::Compact); //压缩
+        emit TcpMgr::getInstance()->sig_send_data(LA::ReqId::ID_SEARCH_USER_REQ, jsonData);
         return;
     }
     //清除弹出框
@@ -138,4 +173,18 @@ void SearchList::slot_item_clicked(QListWidgetItem* item)
 
 void SearchList::slot_user_search(std::shared_ptr<SearchInfo> si)
 {
+    waitPending(false);
+    if (si == nullptr)
+    {
+        _find_dlg = std::make_shared<FindFailDialog>(this);
+    }
+    else
+    {
+        //此处分两种情况，一种是搜多到已经是自己的朋友了，一种是未添加好友
+        //查找是否已经是好友 todo...
+        _find_dlg = std::make_shared<FindSuccessDialog>(this);
+        std::dynamic_pointer_cast<FindSuccessDialog>(_find_dlg)->SetSearchInfo(si);
+    }
+
+    _find_dlg->show();
 }

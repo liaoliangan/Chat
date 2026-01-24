@@ -1,7 +1,7 @@
 #include "CServer.h"
 #include <iostream>
 #include "AsioIOContextPool.h"
-// #include "UserMgr.h"
+#include "UserMgr.h"
 #include "RedisMgr.h"
 #include "ConfigMgr.h"
 
@@ -52,7 +52,7 @@ void CServer::ClearSession(std::string session_id)
         auto uid = _sessions[session_id]->GetUserId();
 
         // 移除用户和session的关联
-        // UserMgr::GetInstance()->RmvUserSession(uid, session_id);
+        UserMgr::GetInstance()->RmvUserSession(uid, session_id);
     }
 
     _sessions.erase(session_id);

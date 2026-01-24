@@ -13,6 +13,7 @@
 #include <QDialog>
 #include <memory>
 #include <QScrollBar>
+#include "loadingdlg.h"
 #include "SearchInfo.h"
 #include "logindialog.h"
 
@@ -34,7 +35,7 @@ private:
     void addTipItem();
     std::shared_ptr<QDialog> _find_dlg;
     QWidget* _search_edit;
-    LoginDialog* _loadingDialog;
+    LoadingDlg* _loadingDialog;
 
 private slots:
     void slot_item_clicked(QListWidgetItem* item);

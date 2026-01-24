@@ -13,7 +13,7 @@
 
 
 ApplyFriend::ApplyFriend(QWidget* parent) :
-    QDialog(parent),ui(new Ui::ApplyFriend), _label_point(2, 6)
+    QDialog(parent), ui(new Ui::ApplyFriend), _label_point(2, 6)
 {
     ui->setupUi(this);
     // 隐藏对话框标题栏
@@ -55,9 +55,8 @@ ApplyFriend::ApplyFriend(QWidget* parent) :
     connect(ui->cancel_btn, &QPushButton::clicked, this, &ApplyFriend::SlotApplyCancel);
     connect(ui->sure_btn, &QPushButton::clicked, this, &ApplyFriend::SlotApplySure);
 #ifdef LADEBUG
-    qDebug()<<"finish ApplyFriend construct";
+    qDebug() << "finish ApplyFriend construct";
 #endif
-
 }
 
 ApplyFriend::~ApplyFriend()
@@ -132,7 +131,7 @@ void ApplyFriend::SetSearchInfo(std::shared_ptr<SearchInfo> si)
     // auto applyname = UserMgr::getInstance()->GetName();
     //TODO 因为实在TcpMgr中，登录的回调函数中设置的UserMgr中的UserInfo
     //TODO 因此在这里UserInfo为空指针，所以GetName会崩溃，测试完记得删除
-    auto applyname="liaoriyin";
+    auto applyname = "liaoriyin";
 #ifdef LADEBUG
     qDebug() << "apply name:" << applyname;
 #endif
@@ -148,7 +147,6 @@ void ApplyFriend::SetSearchInfo(std::shared_ptr<SearchInfo> si)
 #ifdef LADEBUG
     qDebug() << "apply name:" << applyname << "back name:" << bakname;
 #endif
-
 }
 
 void ApplyFriend::ShowMoreLabel()
@@ -534,4 +532,31 @@ void ApplyFriend::SlotApplySure()
     qDebug() << "Slot Apply Sure called";
     this->hide();
     deleteLater();
+    /*
+    * qDebug() << "Slot Apply Sure called" ;
+    QJsonObject jsonObj;
+    auto uid = UserMgr::getInstance()->GetUid();
+    jsonObj["uid"] = uid;
+    auto name = ui->name_edit->text();
+    if(name.isEmpty()){
+        name = ui->name_edit->placeholderText();
+    }
+
+    jsonObj["applyname"] = name;
+    auto bakname = ui->back_edit->text();
+    if(bakname.isEmpty()){
+        bakname = ui->back_edit->placeholderText();
+    }
+    jsonObj["bakname"] = bakname;
+    jsonObj["touid"] = _si->_uid;
+
+    QJsonDocument doc(jsonObj);
+    QByteArray jsonData = doc.toJson(QJsonDocument::Compact);//压缩
+
+    //发送tcp请求给chat server
+    emit TcpMgr::getInstance()->sig_send_data(LA::ReqId::ID_ADD_FRIEND_REQ, jsonData);
+
+    this->hide();
+    deleteLater();
+     */
 }

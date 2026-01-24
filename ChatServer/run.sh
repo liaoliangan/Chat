@@ -34,7 +34,7 @@ function start_server()
             echo "✓ Port 8090 is listening"
 
             # 尝试发送测试请求
-            if curl -s http://localhost:8090/get_test > /dev/null; then
+            if curl -s http://localhost:8090/ > /dev/null; then
                 echo "✓ Server responded to test request"
                 echo "✓ Server startup successful!"
             else
