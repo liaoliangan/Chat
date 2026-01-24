@@ -180,7 +180,7 @@ void TcpMgr::initHandlers()
         {
             int err = static_cast<int>(LA::ErrorCodes::ERROR_JSON);
             qDebug() << "Search Failed, err is Json Parse Err" << err;
-            emit sig_login_failed(err);
+            emit sig_user_search(nullptr);
             return;
         }
 
@@ -200,6 +200,52 @@ void TcpMgr::initHandlers()
                                                         jsonObj["icon"].toString());
 
         emit sig_user_search(search_info);
+    });
+    _handlers.insert(LA::ReqId::ID_NOTIFY_ADD_FRIEND_REQ, [this](LA::ReqId id, int len, QByteArray data)
+    {
+        Q_UNUSED(len);
+        qDebug() << "handle id is " << static_cast<int>(id) << " data is " << data;
+        // 将QByteArray转换为QJsonDocument
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+        // 检查转换是否成功
+        if (jsonDoc.isNull())
+        {
+            qDebug() << "Failed to create QJsonDocument.";
+            return;
+        }
+
+        QJsonObject jsonObj = jsonDoc.object();
+
+        if (!jsonObj.contains("error"))
+        {
+            int err = static_cast<int>(LA::ErrorCodes::ERROR_JSON);
+            qDebug() << "add friend Failed, err is Json Parse Err" << err;
+
+            emit sig_user_search(nullptr);
+            return;
+        }
+
+        int err = jsonObj["error"].toInt();
+        if (err != static_cast<int>(LA::ErrorCodes::SUCCESS))
+        {
+            qDebug() << "add friend Failed, err is " << err;
+            emit sig_user_search(nullptr);
+            return;
+        }
+
+        int from_uid = jsonObj["applyuid"].toInt();
+        QString name = jsonObj["name"].toString();
+        QString desc = jsonObj["desc"].toString();
+        QString icon = jsonObj["icon"].toString();
+        QString nick = jsonObj["nick"].toString();
+        int sex = jsonObj["sex"].toInt();
+
+        auto apply_info = std::make_shared<AddFriendApply>(
+            from_uid, name, desc,
+            icon, nick, sex);
+
+        emit sig_friend_apply(apply_info);
     });
 }
 

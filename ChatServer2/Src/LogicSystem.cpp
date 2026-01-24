@@ -257,9 +257,10 @@ void LogicSystem::AddFriendApply(std::shared_ptr<CSession> session, const short 
     auto apply_info = std::make_shared<UserInfo>();
     bool b_info = GetBaseInfo(base_key, uid, apply_info);
 
-    // 直接通知对方有申请消息
+    // 在同一台服务器直接通知对方有申请消息
     if (to_ip_value == self_name)
     {
+        std::cout<<"LogicSystem::ApplyFriend  to_ip_value == self_name"<<std::endl;
         auto session = UserMgr::GetInstance()->GetSession(touid);
         if (session)
         {
@@ -293,7 +294,7 @@ void LogicSystem::AddFriendApply(std::shared_ptr<CSession> session, const short 
         add_req.set_sex(apply_info->sex);
         add_req.set_nick(apply_info->nick);
     }
-
+    std::cout<<"GRPC NotifyAddFriend"<<std::endl;
     // 发送通知
     ChatGrpcClient::GetInstance()->NotifyAddFriend(to_ip_value, add_req);
 }
@@ -626,7 +627,7 @@ bool LogicSystem::GetFriendApplyInfo(int to_uid, std::vector<std::shared_ptr<App
 }
 bool LogicSystem::GetBaseInfo(std::string base_key, int uid, std::shared_ptr<UserInfo> &userinfo)
 {
-    std::cout << "GetBaseInfo: base_key is " << base_key << " uid is " << uid << " userinfo is " << *(userinfo.get()) << std::endl;
+    //std::cout << "GetBaseInfo: base_key is " << base_key << " uid is " << uid << " userinfo is " << *(userinfo.get()) << std::endl;
     // 优先查redis中查询用户信息
     std::string info_str = "";
     bool b_base = RedisMgr::GetInstance()->Get(base_key, info_str);
@@ -644,8 +645,7 @@ bool LogicSystem::GetBaseInfo(std::string base_key, int uid, std::shared_ptr<Use
         userinfo->desc = root["desc"].asString();
         userinfo->sex = root["sex"].asInt();
         userinfo->icon = root["icon"].asString();
-        std::cout << "user login uid is  " << userinfo->uid << " name  is "
-                  << userinfo->name << " pwd is " << userinfo->pwd << " email is " << userinfo->email << endl;
+        std::cout << "userinfo is " << *(userinfo.get()) << std::endl;
     }
     else
     {

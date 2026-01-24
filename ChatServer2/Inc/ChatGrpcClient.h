@@ -84,7 +84,7 @@ public:
     message::AuthFriendRsp NotifyAuthFriend(std::string server_ip, const message::AuthFriendReq &req);
     bool GetBaseInfo(std::string base_key, int uid, std::shared_ptr<UserInfo> &userinfo);
     message::TextChatMsgRsp NotifyTextChatMsg(std::string server_ip, const message::TextChatMsgReq &req, const Json::Value &rtvalue);
-
+    message::KickUserRsp NotifyKickUser(std::string server_ip, const message::KickUserReq& req);
 private:
     ChatGrpcClient();
     std::unordered_map<std::string, std::unique_ptr<ChatConPool>> _pools;

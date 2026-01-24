@@ -5,9 +5,10 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_ApplyFriend.h" resolved
 
 #include "applyfriend.h"
-
+#include <QJsonDocument>
 #include <QScrollBar>
 #include"global.h"
+#include "TcpMgr.h"
 #include "ui_ApplyFriend.h"
 #include "UserMgr.h"
 
@@ -529,34 +530,34 @@ void ApplyFriend::SlotApplyCancel()
 
 void ApplyFriend::SlotApplySure()
 {
+#ifdef LADEBUG
     qDebug() << "Slot Apply Sure called";
-    this->hide();
-    deleteLater();
-    /*
-    * qDebug() << "Slot Apply Sure called" ;
+#endif
+
     QJsonObject jsonObj;
     auto uid = UserMgr::getInstance()->GetUid();
     jsonObj["uid"] = uid;
     auto name = ui->name_edit->text();
-    if(name.isEmpty()){
+    if (name.isEmpty())
+    {
         name = ui->name_edit->placeholderText();
     }
 
     jsonObj["applyname"] = name;
     auto bakname = ui->back_edit->text();
-    if(bakname.isEmpty()){
+    if (bakname.isEmpty())
+    {
         bakname = ui->back_edit->placeholderText();
     }
     jsonObj["bakname"] = bakname;
     jsonObj["touid"] = _si->_uid;
 
     QJsonDocument doc(jsonObj);
-    QByteArray jsonData = doc.toJson(QJsonDocument::Compact);//压缩
+    QByteArray jsonData = doc.toJson(QJsonDocument::Compact); //压缩
 
     //发送tcp请求给chat server
     emit TcpMgr::getInstance()->sig_send_data(LA::ReqId::ID_ADD_FRIEND_REQ, jsonData);
 
     this->hide();
     deleteLater();
-     */
 }

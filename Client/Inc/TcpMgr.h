@@ -10,6 +10,7 @@
 #include<functional>
 #include<QObject>
 
+#include "AddFriendApply.h"
 #include "AuthRsp.h"
 #include "ServerInfo.h"
 #include "SearchInfo.h"
@@ -47,6 +48,7 @@ signals:
     void sig_login_failed(int);
     void sig_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp);
     void sig_user_search(std::shared_ptr<SearchInfo>);
+    void sig_friend_apply(std::shared_ptr<AddFriendApply>);
 };
 
 
