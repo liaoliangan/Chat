@@ -8,15 +8,20 @@
 #include "ui_ApplyFriendItem.h"
 
 
-ApplyFriendItem::ApplyFriendItem(QWidget *parent) :
+ApplyFriendItem::ApplyFriendItem(QWidget* parent) :
     ListItemBase(parent), _added(false),
     ui(new Ui::ApplyFriendItem)
 {
     ui->setupUi(this);
     SetItemType(ListItemType::APPLY_FRIEND_ITEM);
-    ui->addBtn->SetState("normal","hover", "press");
+    ui->addBtn->SetState("normal", "hover", "press");
     ui->addBtn->hide();
-    connect(ui->addBtn, &ClickedBtn::clicked,  [this](){
+    connect(ui->addBtn, &ClickedBtn::clicked, [this]()
+    {
+#ifdef LADEBUG
+        qDebug() << "ApplyFriendItem::addBtn clicked";
+#endif
+
         emit this->sig_auth_friend(_apply_info);
     });
 }
@@ -42,18 +47,21 @@ void ApplyFriendItem::SetInfo(std::shared_ptr<ApplyInfo> apply_info)
 
 void ApplyFriendItem::ShowAddBtn(bool bshow)
 {
-    if (bshow) {
+    if (bshow)
+    {
         ui->addBtn->show();
         ui->already_add_lb->hide();
         _added = false;
     }
-    else {
+    else
+    {
         ui->addBtn->hide();
         ui->already_add_lb->show();
         _added = true;
     }
 }
 
-int ApplyFriendItem::GetUid() {
+int ApplyFriendItem::GetUid()
+{
     return _apply_info->_uid;
 }

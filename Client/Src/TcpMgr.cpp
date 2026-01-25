@@ -3,6 +3,8 @@
 //
 #include<QAbstractSocket>
 #include "TcpMgr.h"
+
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <utility>
 #include"UserMgr.h"
@@ -157,6 +159,11 @@ void TcpMgr::initHandlers()
         UserMgr::getInstance()->SetUserInfo(
             std::make_shared<UserInfo>(jsonObj["uid"].toInt(), jsonObj["name"].toString(), "", "", 0));
         UserMgr::getInstance()->SetToken(jsonObj["token"].toString());
+
+        if (jsonObj.contains("apply_list"))
+        {
+            UserMgr::getInstance()->AppendApplyList(jsonObj["apply_list"].toArray());
+        }
         emit sig_switch_chatdlg();
     });
 
@@ -200,6 +207,39 @@ void TcpMgr::initHandlers()
                                                         jsonObj["icon"].toString());
 
         emit sig_user_search(search_info);
+    });
+
+    _handlers.insert(LA::ReqId::ID_ADD_FRIEND_RSP, [this](LA::ReqId id, int len, QByteArray data)
+    {
+        Q_UNUSED(len);
+        qDebug() << "handle id is " << static_cast<int>(id) << " data is " << data;
+        // 将QByteArray转换为QJsonDocument
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+        // 检查转换是否成功
+        if (jsonDoc.isNull())
+        {
+            qDebug() << "Failed to create QJsonDocument.";
+            return;
+        }
+
+        QJsonObject jsonObj = jsonDoc.object();
+
+        if (!jsonObj.contains("error"))
+        {
+            int err = static_cast<int>(LA::ErrorCodes::ERROR_JSON);
+            qDebug() << "Add Friend Failed, err is Json Parse Err" << err;
+            return;
+        }
+
+        int err = jsonObj["error"].toInt();
+        if (err != static_cast<int>(LA::ErrorCodes::SUCCESS))
+        {
+            qDebug() << "Add Friend Failed, err is " << err;
+            return;
+        }
+
+        qDebug() << "Add Friend Success ";
     });
     _handlers.insert(LA::ReqId::ID_NOTIFY_ADD_FRIEND_REQ, [this](LA::ReqId id, int len, QByteArray data)
     {
@@ -256,8 +296,7 @@ void TcpMgr::slot_tcp_connect(const ServerInfo& si)
     qDebug() << "Connecting to server...";
     qDebug() << "host is " << si.Host << " port is " << si.Port;
     _host = si.Host;
-    // _port = si.Port.toUShort();
-    _port = 8090;
+    _port = si.Port.toUShort();
     _socket.connectToHost(_host, _port);
 }
 

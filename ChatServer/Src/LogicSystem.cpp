@@ -166,8 +166,22 @@ void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short &msg_id
     rtvalue["sex"] = user_info->sex;
     rtvalue["icon"] = user_info->icon;
 
-    // TODO 从数据库获取申请列表
-
+    //从数据库获取申请列表
+    std::vector<std::shared_ptr<ApplyInfo>> apply_list;
+    auto b_apply = GetFriendApplyInfo(uid,apply_list);
+    if (b_apply) {
+        for (auto & apply : apply_list) {
+            Json::Value obj;
+            obj["name"] = apply->_name;
+            obj["uid"] = apply->_uid;
+            obj["icon"] = apply->_icon;
+            obj["nick"] = apply->_nick;
+            obj["sex"] = apply->_sex;
+            obj["desc"] = apply->_desc;
+            obj["status"] = apply->_status;
+            rtvalue["apply_list"].append(obj);
+        }
+    }
     // TODO 获取好友列表
 
     auto server_name = ConfigMgr::GetInstance().GetValue("SelfServer", "Name");

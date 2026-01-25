@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QRandomGenerator>
 #include "applyfrienditem.h"
+#include "authenfriend.h"
 #include "ui_ApplyFriendPage.h"
 #include "global.h"
 #include "TcpMgr.h"
@@ -50,10 +51,10 @@ void ApplyFriendPage::AddNewApply(std::shared_ptr<AddFriendApply> apply)
     //收到审核好友信号
     connect(apply_item, &ApplyFriendItem::sig_auth_friend, [this](std::shared_ptr<ApplyInfo> apply_info)
     {
-        //        auto* authFriend = new AuthenFriend(this);
-        //        authFriend->setModal(true);
-        //        authFriend->SetApplyInfo(apply_info);
-        //        authFriend->show();
+        auto* authFriend = new AuthenFriend(this);
+        authFriend->setModal(true);
+        authFriend->SetApplyInfo(apply_info);
+        authFriend->show();
     });
 }
 
@@ -96,10 +97,13 @@ void ApplyFriendPage::loadApplyList()
         //收到审核好友信号
         connect(apply_item, &ApplyFriendItem::sig_auth_friend, [this](std::shared_ptr<ApplyInfo> apply_info)
         {
-            //            auto* authFriend = new AuthenFriend(this);
-            //            authFriend->setModal(true);
-            //            authFriend->SetApplyInfo(apply_info);
-            //            authFriend->show();
+#ifdef LADEBUG
+            qDebug() << "sig_auth_friend apply_info is " << apply_info->_name;
+#endif
+            auto* authFriend = new AuthenFriend(this);
+            authFriend->setModal(true);
+            authFriend->SetApplyInfo(apply_info);
+            authFriend->show();
         });
     }
 
@@ -124,18 +128,22 @@ void ApplyFriendPage::loadApplyList()
         //收到审核好友信号
         connect(apply_item, &ApplyFriendItem::sig_auth_friend, [this](std::shared_ptr<ApplyInfo> apply_info)
         {
-            //            auto *authFriend =  new AuthenFriend(this);
-            //            authFriend->setModal(true);
-            //            authFriend->SetApplyInfo(apply_info);
-            //            authFriend->show();
+#ifdef LADEBUG
+            qDebug() << "sig_auth_friend apply_info is " << apply_info->_name;
+#endif
+
+            auto* authFriend = new AuthenFriend(this);
+            authFriend->setModal(true);
+            authFriend->SetApplyInfo(apply_info);
+            authFriend->show();
         });
     }
 }
 
 void ApplyFriendPage::slot_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp)
 {
-    auto uid = auth_rsp->_uid;
-    auto find_iter = _unauth_items.find(uid);
+    const auto uid = auth_rsp->_uid;
+    const auto find_iter = _unauth_items.find(uid);
     if (find_iter == _unauth_items.end())
     {
         return;

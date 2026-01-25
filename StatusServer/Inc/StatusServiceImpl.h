@@ -9,6 +9,11 @@
 class ChatServer
 {
 public:
+    friend std::ostream &operator<<(std::ostream &os, const ChatServer &cs)
+    {
+        os << "ChatServer Info : " << "host:" << cs.host << " port:" << cs.port << " name:" << cs.name << " con_count:" << cs.con_count;
+        return os;
+    }
     ChatServer() : host(""), port(""), name(""), con_count(0) {}
     ChatServer(const ChatServer &cs) : host(cs.host), port(cs.port), name(cs.name), con_count(cs.con_count) {}
     ChatServer &operator=(const ChatServer &cs)

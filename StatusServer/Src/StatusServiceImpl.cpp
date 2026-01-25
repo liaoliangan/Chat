@@ -93,10 +93,12 @@ ChatServer StatusServiceImpl::getChatServer()
 	if (count_str.empty())
 	{
 		// 不存在则默认设置为最大
+		std::cout << "count_str==empty---minServer.name:" << minServer.name << std::endl;
 		minServer.con_count = INT_MAX;
 	}
 	else
 	{
+		std::cout << "minServer.name:" << minServer.name << std::endl;
 		minServer.con_count = std::stoi(count_str);
 	}
 
@@ -122,6 +124,7 @@ ChatServer StatusServiceImpl::getChatServer()
 			minServer = server.second;
 		}
 	}
+	std::cout << "minServer: " << minServer << std::endl;
 	return minServer;
 }
 

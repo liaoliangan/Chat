@@ -11,6 +11,8 @@
 #include "chatuserwid.h"
 #include <QRandomGenerator>
 #include "loadingdlg.h"
+#include "TcpMgr.h"
+#include "UserMgr.h"
 
 ChatDialog::ChatDialog(QWidget* parent) :
     QDialog(parent), ui(new Ui::ChatDialog), _state(ChatUIMode::ChatMode), _b_loading(false)
@@ -90,6 +92,7 @@ ChatDialog::ChatDialog(QWidget* parent) :
 
     //为search_list设置search_edit
     ui->search_list->SetSearchEdit(ui->search_edit);
+    connect(TcpMgr::getInstance().get(),&TcpMgr::sig_friend_apply,this,&ChatDialog::slot_apply_friend);
 }
 
 ChatDialog::~ChatDialog()
@@ -240,4 +243,17 @@ void ChatDialog::handleGlobalMousePress(QMouseEvent* mouse_event)
         ui->search_edit->clear();
         ShowSearch(false);
     }
+}
+void ChatDialog::slot_apply_friend(std::shared_ptr<AddFriendApply> apply)
+{
+    qDebug() << "receive apply friend slot, applyuid is " << apply->_from_uid << " name is "
+        << apply->_name << " desc is " << apply->_desc;
+
+    if(UserMgr::getInstance()->AlreadyApply(apply->_from_uid))
+        return;//如果已经申请个一次了
+
+    UserMgr::getInstance()->AddApplyList(std::make_shared<ApplyInfo>(apply));
+    ui->side_contact_label->ShowRedPoint(true);
+    ui->con_user_list->ShowRedPoint(true);
+    ui->friend_apply_page->AddNewApply(apply);
 }

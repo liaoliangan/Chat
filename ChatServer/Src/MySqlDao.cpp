@@ -1,5 +1,6 @@
 #include "MySqlDao.h"
 #include "ConfigMgr.h"
+#include "Defer"
 MysqlDao::MysqlDao()
 {
     auto &cfg = ConfigMgr::GetInstance();

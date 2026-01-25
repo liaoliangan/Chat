@@ -165,7 +165,24 @@ void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short &msg_id
     rtvalue["sex"] = user_info->sex;
     rtvalue["icon"] = user_info->icon;
 
-    // TODO 从数据库获取申请列表
+    // 从数据库获取申请列表
+    std::vector<std::shared_ptr<ApplyInfo>> apply_list;
+    auto b_apply = GetFriendApplyInfo(uid, apply_list);
+    if (b_apply)
+    {
+        for (auto &apply : apply_list)
+        {
+            Json::Value obj;
+            obj["name"] = apply->_name;
+            obj["uid"] = apply->_uid;
+            obj["icon"] = apply->_icon;
+            obj["nick"] = apply->_nick;
+            obj["sex"] = apply->_sex;
+            obj["desc"] = apply->_desc;
+            obj["status"] = apply->_status;
+            rtvalue["apply_list"].append(obj);
+        }
+    }
 
     // TODO 获取好友列表
 
@@ -260,7 +277,7 @@ void LogicSystem::AddFriendApply(std::shared_ptr<CSession> session, const short 
     // 在同一台服务器直接通知对方有申请消息
     if (to_ip_value == self_name)
     {
-        std::cout<<"LogicSystem::ApplyFriend  to_ip_value == self_name"<<std::endl;
+        std::cout << "LogicSystem::ApplyFriend  to_ip_value == self_name" << std::endl;
         auto session = UserMgr::GetInstance()->GetSession(touid);
         if (session)
         {
@@ -294,7 +311,7 @@ void LogicSystem::AddFriendApply(std::shared_ptr<CSession> session, const short 
         add_req.set_sex(apply_info->sex);
         add_req.set_nick(apply_info->nick);
     }
-    std::cout<<"GRPC NotifyAddFriend"<<std::endl;
+    std::cout << "GRPC NotifyAddFriend" << std::endl;
     // 发送通知
     ChatGrpcClient::GetInstance()->NotifyAddFriend(to_ip_value, add_req);
 }
@@ -627,8 +644,8 @@ bool LogicSystem::GetFriendApplyInfo(int to_uid, std::vector<std::shared_ptr<App
 }
 bool LogicSystem::GetBaseInfo(std::string base_key, int uid, std::shared_ptr<UserInfo> &userinfo)
 {
-    //std::cout << "GetBaseInfo: base_key is " << base_key << " uid is " << uid << " userinfo is " << *(userinfo.get()) << std::endl;
-    // 优先查redis中查询用户信息
+    // std::cout << "GetBaseInfo: base_key is " << base_key << " uid is " << uid << " userinfo is " << *(userinfo.get()) << std::endl;
+    //  优先查redis中查询用户信息
     std::string info_str = "";
     bool b_base = RedisMgr::GetInstance()->Get(base_key, info_str);
     if (b_base)

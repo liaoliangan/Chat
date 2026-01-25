@@ -16,7 +16,7 @@ struct ApplyInfo
     {
     }
 
-    ApplyInfo(std::shared_ptr<AddFriendApply> addinfo)
+    ApplyInfo(const std::shared_ptr<AddFriendApply>& addinfo)
         : _uid(addinfo->_from_uid), _name(addinfo->_name),
           _desc(addinfo->_desc), _icon(addinfo->_icon),
           _nick(addinfo->_nick), _sex(addinfo->_sex),

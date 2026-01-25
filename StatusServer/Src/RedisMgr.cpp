@@ -25,7 +25,7 @@ bool RedisMgr::Get(const std::string &key, std::string &value)
     if (reply == NULL)
     {
         std::cout << "[ GET  " << key << " ] failed" << std::endl;
-        freeReplyObject(reply);
+        // freeReplyObject(reply);
         _con_pool->returnConnection(connect);
         return false;
     }

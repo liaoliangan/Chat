@@ -147,8 +147,7 @@ bool ChatServiceImpl::GetBaseInfo(std::string base_key, int uid, std::shared_ptr
         userinfo->desc = root["desc"].asString();
         userinfo->sex = root["sex"].asInt();
         userinfo->icon = root["icon"].asString();
-        std::cout << "user login uid is  " << userinfo->uid << " name  is "
-                  << userinfo->name << " pwd is " << userinfo->pwd << " email is " << userinfo->email << endl;
+        std::cout << "GetBaseInfo "<<*(userinfo.get()) << endl;
     }
     else
     {
