@@ -11,6 +11,7 @@
 #include "findfaildialog.h"
 #include "findsuccessdialog.h"
 #include "loadingdlg.h"
+#include "UserMgr.h"
 
 SearchList::SearchList(QWidget* parent): QListWidget(parent),
                                          _find_dlg(nullptr), _search_edit(nullptr), _send_pending(false)
@@ -180,8 +181,21 @@ void SearchList::slot_user_search(std::shared_ptr<SearchInfo> si)
     }
     else
     {
+        //TODO 如果是自己，暂时返回，以后再扩充
+        auto self_uid = UserMgr::getInstance()->GetUid();
+        if (si->_uid == self_uid)
+        {
+            return;
+        }
         //此处分两种情况，一种是搜多到已经是自己的朋友了，一种是未添加好友
         //查找是否已经是好友 todo...
+        bool bExist=UserMgr::getInstance()->CheckFriendById(si->_uid);
+        if (bExist)
+        {
+            //已经添加好友，实现页面跳转
+            emit sig_jump_chat_item(si);
+            return;
+        }
         _find_dlg = std::make_shared<FindSuccessDialog>(this);
         std::dynamic_pointer_cast<FindSuccessDialog>(_find_dlg)->SetSearchInfo(si);
     }

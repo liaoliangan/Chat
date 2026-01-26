@@ -31,11 +31,13 @@ protected:
 
 private:
     void waitPending(bool pending = true);
-    bool _send_pending;//pending为true说明在等待服务器回包，应该阻塞不更新页面
+    bool _send_pending; //pending为true说明在等待服务器回包，应该阻塞不更新页面
     void addTipItem();
     std::shared_ptr<QDialog> _find_dlg;
     QWidget* _search_edit;
     LoadingDlg* _loadingDialog;
+signals:
+    void sig_jump_chat_item(std::shared_ptr<SearchInfo> si);
 
 private slots:
     void slot_item_clicked(QListWidgetItem* item);

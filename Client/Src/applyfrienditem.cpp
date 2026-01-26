@@ -7,7 +7,6 @@
 #include "applyfrienditem.h"
 #include "ui_ApplyFriendItem.h"
 
-
 ApplyFriendItem::ApplyFriendItem(QWidget* parent) :
     ListItemBase(parent), _added(false),
     ui(new Ui::ApplyFriendItem)

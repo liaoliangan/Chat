@@ -164,6 +164,12 @@ void TcpMgr::initHandlers()
         {
             UserMgr::getInstance()->AppendApplyList(jsonObj["apply_list"].toArray());
         }
+
+        //添加好友列表
+        if (jsonObj.contains("friend_list"))
+        {
+            UserMgr::getInstance()->AppendFriendList(jsonObj["friend_list"].toArray());
+        }
         emit sig_switch_chatdlg();
     });
 

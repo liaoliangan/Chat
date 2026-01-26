@@ -53,3 +53,16 @@ void ChatUserWid::SetInfo(std::shared_ptr<FriendInfo> friend_info)
     ui->user_name_libel->setText(_user_info->_name);
     ui->user_chat_label->setText(_user_info->_last_msg);
 }
+void ChatUserWid::ShowRedPoint(bool bshow)
+{
+    // if(bshow){
+    //     ui->red_point->show();
+    // }else{
+    //     ui->red_point->hide();
+    // }
+}
+
+std::shared_ptr<UserInfo> ChatUserWid::GetUserInfo()
+{
+    return _user_info;
+}

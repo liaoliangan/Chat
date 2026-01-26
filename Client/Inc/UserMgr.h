@@ -31,6 +31,13 @@ public:
     void AddFriend(std::shared_ptr<AuthRsp> auth_rsp);
     void AddFriend(std::shared_ptr<AuthInfo> auth_info);
     std::shared_ptr<FriendInfo> GetFriendById(int uid);
+    std::shared_ptr<UserInfo> GetUserInfo();
+    std::vector<std::shared_ptr<FriendInfo>> GetChatListPerPage();
+    bool IsLoadChatFin();
+    void UpdateChatLoadedCount();
+    std::vector<std::shared_ptr<FriendInfo>> GetConListPerPage();
+    void UpdateContactLoadedCount();
+    bool IsLoadConFin();
 
 private:
     UserMgr();
@@ -39,6 +46,8 @@ private:
     std::vector<std::shared_ptr<ApplyInfo>> _apply_list;
     std::vector<std::shared_ptr<FriendInfo>> _friend_list;
     QMap<int, std::shared_ptr<FriendInfo>> _friend_map;
+    int _chat_loaded;
+    int _contact_loaded;
 };
 
 #endif // USERMGR_H

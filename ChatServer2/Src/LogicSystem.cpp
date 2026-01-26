@@ -183,6 +183,19 @@ void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short &msg_id
         }
     }
     // TODO 获取好友列表
+    std::vector<std::shared_ptr<UserInfo>> friend_list;
+    bool b_friend_list = GetFriendList(uid, friend_list);
+    for (auto& friend_ele : friend_list) {
+        Json::Value obj;
+        obj["name"] = friend_ele->name;
+        obj["uid"] = friend_ele->uid;
+        obj["icon"] = friend_ele->icon;
+        obj["nick"] = friend_ele->nick;
+        obj["sex"] = friend_ele->sex;
+        obj["desc"] = friend_ele->desc;
+        obj["back"] = friend_ele->back;
+        rtvalue["friend_list"].append(obj);
+    }
 
     auto server_name = ConfigMgr::GetInstance().GetValue("SelfServer", "Name");
     // 将登陆数量增加

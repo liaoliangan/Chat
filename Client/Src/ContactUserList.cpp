@@ -3,15 +3,20 @@
 //
 
 #include "ContactUserList.h"
+
+#include <qcoreapplication.h>
+
 #include "global.h"
 #include "ListItemBase.h"
 #include <QRandomGenerator>
+#include <QTimer>
+
 #include "TcpMgr.h"
 #include "conuseritem.h"
 #include "grouptipitem.h"
 #include "UserMgr.h"
 
-ContactUserList::ContactUserList(QWidget* parent)
+ContactUserList::ContactUserList(QWidget* parent): _load_pending(false), _add_friend_item(nullptr)
 {
     Q_UNUSED(parent);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -68,6 +73,20 @@ void ContactUserList::addContactUserList()
     this->setItemWidget(_groupitem, groupCon);
     _groupitem->setFlags(_groupitem->flags() & ~Qt::ItemIsSelectable);
 
+    //加载后端发送过来的好友列表
+    auto con_list = UserMgr::getInstance()->GetConListPerPage();
+    for (auto& con_ele : con_list)
+    {
+        auto* con_user_wid = new ConUserItem();
+        con_user_wid->SetInfo(con_ele->_uid, con_ele->_name, con_ele->_icon);
+        QListWidgetItem* item = new QListWidgetItem;
+        //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
+        item->setSizeHint(con_user_wid->sizeHint());
+        this->addItem(item);
+        this->setItemWidget(item, con_user_wid);
+    }
+
+    UserMgr::getInstance()->UpdateContactLoadedCount();
 
     // 创建QListWidgetItem，并设置自定义的widget
     for (int i = 0; i < 13; i++)
@@ -122,6 +141,24 @@ bool ContactUserList::eventFilter(QObject* watched, QEvent* event)
 
         if (maxScrollValue - currentValue <= 0)
         {
+            auto b_loaded = UserMgr::getInstance()->IsLoadChatFin();
+            if (b_loaded)
+            {
+                return true;
+            }
+
+            if (_load_pending)
+            {
+                return true;
+            }
+
+            _load_pending = true;
+
+            QTimer::singleShot(100, [this]()
+            {
+                _load_pending = false;
+                QCoreApplication::quit(); // 完成后退出应用程序
+            });
             // 滚动到底部，加载新的联系人
             qDebug() << "load more contact user";
             //发送信号通知聊天界面加载更多聊天内容
