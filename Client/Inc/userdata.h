@@ -12,6 +12,7 @@
 #include "TextChatMsg.h"
 #include "UserInfo.h"
 #include "SearchInfo.h"
+#include "ServerInfo.h"
 #include "AddFriendApply.h"
 #include "ApplyInfo.h"
 

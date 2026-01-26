@@ -9,11 +9,7 @@
 #include"global.h"
 #include<functional>
 #include<QObject>
-
-#include "AddFriendApply.h"
-#include "AuthRsp.h"
-#include "ServerInfo.h"
-#include "SearchInfo.h"
+#include "userdata.h"
 
 class TcpMgr : public QObject,
                public Singalton<TcpMgr>,
@@ -49,6 +45,7 @@ signals:
     void sig_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp);
     void sig_user_search(std::shared_ptr<SearchInfo>);
     void sig_friend_apply(std::shared_ptr<AddFriendApply>);
+    void sig_add_auth_friend(std::shared_ptr<AuthInfo>);
 };
 
 

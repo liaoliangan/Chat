@@ -9,6 +9,7 @@
 #include "TcpMgr.h"
 #include "conuseritem.h"
 #include "grouptipitem.h"
+#include "UserMgr.h"
 
 ContactUserList::ContactUserList(QWidget* parent)
 {
@@ -22,16 +23,16 @@ ContactUserList::ContactUserList(QWidget* parent)
     addContactUserList();
     //连接点击的信号和槽
     connect(this, &QListWidget::itemClicked, this, &ContactUserList::slot_item_clicked);
-    //    //链接对端同意认证后通知的信号
-    //    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_add_auth_friend,this,
-    //            &ContactUserList::slot_add_auth_firend);
+    //链接对端同意认证后通知的信号
+    connect(TcpMgr::getInstance().get(), &TcpMgr::sig_add_auth_friend, this,
+            &ContactUserList::slot_add_auth_firend);
 
-    //    //链接自己点击同意认证后界面刷新
-    //    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_auth_rsp,this,
-    //            &ContactUserList::slot_auth_rsp);
+    //链接自己点击同意认证后界面刷新
+    connect(TcpMgr::getInstance().get(), &TcpMgr::sig_auth_rsp, this,
+            &ContactUserList::slot_auth_rsp);
 }
 
-void ContactUserList::ShowRedPoint(bool bshow /*= true*/)
+void ContactUserList::ShowRedPoint(bool bshow)
 {
     _add_friend_item->ShowRedPoint(bshow);
 }
@@ -175,4 +176,57 @@ void ContactUserList::slot_item_clicked(QListWidgetItem* item)
         emit sig_switch_friend_info_page();
         return;
     }
+}
+
+void ContactUserList::slot_add_auth_firend(std::shared_ptr<AuthInfo> auth_info)
+{
+    qDebug() << "slot add auth friend ";
+    bool isFriend = UserMgr::getInstance()->CheckFriendById(auth_info->_uid);
+    if (isFriend)
+    {
+        return;
+    }
+    // 在 groupitem 之后插入新项
+    int randomValue = QRandomGenerator::global()->bounded(100); // 生成0到99之间的随机整数
+    int str_i = randomValue % strs.size();
+    int head_i = randomValue % heads.size();
+
+    auto* con_user_wid = new ConUserItem();
+    con_user_wid->SetInfo(auth_info);
+    QListWidgetItem* item = new QListWidgetItem;
+    //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
+    item->setSizeHint(con_user_wid->sizeHint());
+
+    // 获取 groupitem 的索引
+    int index = this->row(_groupitem);
+    // 在 groupitem 之后插入新项
+    this->insertItem(index + 1, item);
+
+    this->setItemWidget(item, con_user_wid);
+}
+
+void ContactUserList::slot_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp)
+{
+    qDebug() << "slot auth rsp called";
+    if (UserMgr::getInstance()->CheckFriendById(auth_rsp->_uid))
+    {
+        return;
+    }
+    // 在 groupitem 之后插入新项
+    const int randomValue = QRandomGenerator::global()->bounded(100); // 生成0到99之间的随机整数
+    int str_i = randomValue % strs.size();
+    const int head_i = randomValue % heads.size();
+
+    auto* con_user_wid = new ConUserItem();
+    con_user_wid->SetInfo(auth_rsp->_uid, auth_rsp->_name, heads[head_i]);
+    QListWidgetItem* item = new QListWidgetItem;
+    //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
+    item->setSizeHint(con_user_wid->sizeHint());
+
+    // 获取 groupitem 的索引
+    int index = this->row(_groupitem);
+    // 在 groupitem 之后插入新项
+    this->insertItem(index + 1, item);
+
+    this->setItemWidget(item, con_user_wid);
 }

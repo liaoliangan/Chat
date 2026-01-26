@@ -26,31 +26,30 @@ QSize ChatUserWid::sizeHint() const
     return QSize(250, 70); // 返回自定义的尺寸
 }
 
-void ChatUserWid::SetInfo(QString name, QString head, QString msg)
+void ChatUserWid::SetInfo(std::shared_ptr<UserInfo> user_info)
 {
-    _name = name;
-    _head = head;
-    _msg = msg;
-    QString default_pixmap = ":/image/login_ioc.png";
+    _user_info = user_info;
     // 加载图片
-    QPixmap pixmap;
-    if (!head.isEmpty())
-    {
-        if (!pixmap.load(head))
-        {
-            qWarning() << "Failed to load image:" << head;
-            pixmap.load(default_pixmap);
-        }
-    }
-    else
-    {
-        pixmap.load(default_pixmap);
-    }
+    QPixmap pixmap(_user_info->_icon);
 
     // 设置图片自动缩放
     ui->icon_label->setPixmap(pixmap.scaled(ui->icon_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->icon_label->setScaledContents(true);
 
-    ui->user_name_libel->setText(_name);
-    ui->user_chat_label->setText(_msg);
+    ui->user_name_libel->setText(_user_info->_name);
+    ui->user_chat_label->setText(_user_info->_last_msg);
+}
+
+void ChatUserWid::SetInfo(std::shared_ptr<FriendInfo> friend_info)
+{
+    _user_info = std::make_shared<UserInfo>(friend_info);
+    // 加载图片
+    QPixmap pixmap(_user_info->_icon);
+
+    // 设置图片自动缩放
+    ui->icon_label->setPixmap(pixmap.scaled(ui->icon_label->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->icon_label->setScaledContents(true);
+
+    ui->user_name_libel->setText(_user_info->_name);
+    ui->user_chat_label->setText(_user_info->_last_msg);
 }

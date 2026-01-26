@@ -92,7 +92,11 @@ ChatDialog::ChatDialog(QWidget* parent) :
 
     //为search_list设置search_edit
     ui->search_list->SetSearchEdit(ui->search_edit);
-    connect(TcpMgr::getInstance().get(),&TcpMgr::sig_friend_apply,this,&ChatDialog::slot_apply_friend);
+    //连接申请添加好友信号
+    connect(TcpMgr::getInstance().get(), &TcpMgr::sig_friend_apply, this, &ChatDialog::slot_apply_friend);
+
+    //连接自己认证回复信号
+    connect(TcpMgr::getInstance().get(), &TcpMgr::sig_auth_rsp, this, &ChatDialog::slot_auth_rsp);
 }
 
 ChatDialog::~ChatDialog()
@@ -117,7 +121,8 @@ void ChatDialog::addChatUserList()
         int name_i = randomValue % names.size();
 
         auto* chat_user_wid = new ChatUserWid();
-        chat_user_wid->SetInfo(names[name_i], heads[head_i], strs[str_i]);
+        chat_user_wid->SetInfo(std::make_shared<UserInfo>(0,names[name_i],
+                                                    names[name_i],heads[head_i],0,strs[str_i]));
         QListWidgetItem* item = new QListWidgetItem;
         //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
         item->setSizeHint(chat_user_wid->sizeHint());
@@ -244,16 +249,46 @@ void ChatDialog::handleGlobalMousePress(QMouseEvent* mouse_event)
         ShowSearch(false);
     }
 }
+
 void ChatDialog::slot_apply_friend(std::shared_ptr<AddFriendApply> apply)
 {
     qDebug() << "receive apply friend slot, applyuid is " << apply->_from_uid << " name is "
         << apply->_name << " desc is " << apply->_desc;
 
-    if(UserMgr::getInstance()->AlreadyApply(apply->_from_uid))
-        return;//如果已经申请个一次了
+    if (UserMgr::getInstance()->AlreadyApply(apply->_from_uid))
+        return; //如果已经申请个一次了
 
     UserMgr::getInstance()->AddApplyList(std::make_shared<ApplyInfo>(apply));
     ui->side_contact_label->ShowRedPoint(true);
     ui->con_user_list->ShowRedPoint(true);
     ui->friend_apply_page->AddNewApply(apply);
+}
+
+void ChatDialog::slot_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp)
+{
+    qDebug() << "receive slot_auth_rsp uid is " << auth_rsp->_uid
+        << " name is " << auth_rsp->_name << " nick is " << auth_rsp->_nick;
+
+    //判断如果已经是好友则跳过
+    auto bfriend = UserMgr::getInstance()->CheckFriendById(auth_rsp->_uid);
+    if (bfriend)
+    {
+        return;
+    }
+
+    UserMgr::getInstance()->AddFriend(auth_rsp);
+    int randomValue = QRandomGenerator::global()->bounded(100); // 生成0到99之间的随机整数
+    int str_i = randomValue % strs.size();
+    int head_i = randomValue % heads.size();
+    int name_i = randomValue % names.size();
+
+    auto* chat_user_wid = new ChatUserWid();
+    auto user_info = std::make_shared<UserInfo>(auth_rsp);
+    chat_user_wid->SetInfo(user_info);
+    QListWidgetItem* item = new QListWidgetItem;
+    //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
+    item->setSizeHint(chat_user_wid->sizeHint());
+    ui->chat_user_list->insertItem(0, item);
+    ui->chat_user_list->setItemWidget(item, chat_user_wid);
+    _chat_items_added.insert(auth_rsp->_uid, item);
 }

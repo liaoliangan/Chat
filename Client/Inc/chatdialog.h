@@ -6,8 +6,9 @@
 #define CHATDIALOG_H
 
 #include <QDialog>
+#include <QListWidgetItem>
 
-#include "AddFriendApply.h"
+#include "userdata.h"
 #include "global.h"
 #include "StateWidget.h"
 
@@ -40,12 +41,14 @@ private:
     QList<StateWidget*> _lb_list;
     void ClearLabelState(StateWidget* lb);
     void handleGlobalMousePress(QMouseEvent* mouse_event);
+    QMap<int, QListWidgetItem*> _chat_items_added;
 private slots:
     void slot_loading_chat_user();
     void slot_side_chat();
     void slot_side_contact();
     void slot_text_changed(const QString& str);
     void slot_apply_friend(std::shared_ptr<AddFriendApply> apply);
+    void slot_auth_rsp(std::shared_ptr<AuthRsp> auth_info);
 };
 
 
