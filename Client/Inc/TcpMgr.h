@@ -46,6 +46,7 @@ signals:
     void sig_user_search(std::shared_ptr<SearchInfo>);
     void sig_friend_apply(std::shared_ptr<AddFriendApply>);
     void sig_add_auth_friend(std::shared_ptr<AuthInfo>);
+    void sig_text_chat_msg(std::shared_ptr<TextChatMsg> msg);
 };
 
 

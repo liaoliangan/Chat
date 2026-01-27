@@ -210,7 +210,9 @@ void ContactUserList::slot_item_clicked(QListWidgetItem* item)
         // 创建对话框，提示用户
         qDebug() << "contact user item clicked ";
         //跳转到好友申请界面
-        emit sig_switch_friend_info_page();
+        auto con_item = qobject_cast<ConUserItem*>(customItem);
+        auto user_info = con_item->GetInfo();
+        emit sig_switch_friend_info_page(user_info);
         return;
     }
 }
