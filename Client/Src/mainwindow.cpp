@@ -24,9 +24,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(__loginDialog, &LoginDialog::switchRegister, this, &MainWindow::SlotSwitchReg);
     connect(__loginDialog, &LoginDialog::switchReset, this, &MainWindow::SlotSwitchReset);
     connect(TcpMgr::getInstance().get(), &TcpMgr::sig_switch_chatdlg, this, &MainWindow::SlotSwitchChatDialog);
-    //方便测试，直接跳到聊天界面
-    //TODO 记得删除
-    // emit TcpMgr::getInstance()->sig_switch_chatdlg();
+    connect(__loginDialog,&LoginDialog::switchQRCodeDialog,this,&MainWindow::SlotSwitchQRCodeDialog);
 }
 
 MainWindow::~MainWindow()
@@ -92,4 +90,29 @@ void MainWindow::SlotSwitchLoginFromResetDialog()
     __loginDialog->show();
     connect(__loginDialog, &LoginDialog::switchReset, this, &MainWindow::SlotSwitchReset);
     connect(__loginDialog, &LoginDialog::switchRegister, this, &MainWindow::SlotSwitchReg);
+    connect(__loginDialog,&LoginDialog::switchQRCodeDialog,this,&MainWindow::SlotSwitchQRCodeDialog);
+}
+
+void MainWindow::SlotSwitchQRCodeDialog()
+{
+    __qrCodeDialog = new qrCodeDialog(this);
+    __qrCodeDialog->show();
+    connect(__qrCodeDialog,&qrCodeDialog::switchChatDialog,this,&MainWindow::SlotChatDialogFromQRCode);
+    connect(__qrCodeDialog,&qrCodeDialog::qrCodeFailed,this,&MainWindow::SlotSwitchLoginFromQRCodeFailed);
+}
+
+void MainWindow::SlotChatDialogFromQRCode()
+{
+    __chatDialog = new ChatDialog(this);
+    __chatDialog->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+    setCentralWidget(__chatDialog);
+    __chatDialog->show();
+    __loginDialog->hide();
+    this->setMinimumSize(QSize(1050, 900));
+    this->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
+}
+
+void MainWindow::SlotSwitchLoginFromQRCodeFailed()
+{
+    __qrCodeDialog->hide();
 }

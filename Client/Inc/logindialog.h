@@ -29,7 +29,7 @@ signals:
     void switchRegister();
     void switchReset();
     void sig_connect_tcp(ServerInfo);
-
+    void switchQRCodeDialog();
 private slots:
     void slot_forget_pwd();
     void on_login_btn_clicked();

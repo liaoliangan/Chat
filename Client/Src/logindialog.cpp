@@ -30,6 +30,8 @@ LoginDialog::LoginDialog(QWidget* parent) :
     connect(TcpMgr::getInstance().get(), &TcpMgr::sig_con_success, this, &LoginDialog::slot_tcp_con_finish);
     //连接tcp管理者发出的登录失败信号
     connect(TcpMgr::getInstance().get(), &TcpMgr::sig_login_failed, this, &LoginDialog::slot_login_failed);
+    //连接扫码登录信号
+    connect(ui->qrCode_btn,&QPushButton::clicked,this,&LoginDialog::switchQRCodeDialog);
 }
 
 LoginDialog::~LoginDialog()
